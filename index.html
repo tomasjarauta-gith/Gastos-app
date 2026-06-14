@@ -30,124 +30,66 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--sans); overscroll-behavior: none; }
-
-    /* Layout */
     #app { max-width: 480px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; position: relative; }
-    .header {
-      background: linear-gradient(135deg, var(--surface2) 0%, #0a1628 100%);
-      padding: 16px 18px 12px;
-      border-bottom: 1px solid var(--border);
-      position: sticky; top: 0; z-index: 100;
-    }
+    .header { background: linear-gradient(135deg, var(--surface2) 0%, #0a1628 100%); padding: 16px 18px 12px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
     .header-row { display: flex; align-items: center; justify-content: space-between; }
     .header-title { font-family: var(--serif); font-size: 20px; color: var(--accent); }
     .header-sub { font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 2px; }
     .header-sync { font-size: 10px; color: #444466; margin-top: 3px; }
-    .icon-btn {
-      width: 34px; height: 34px; border-radius: 8px;
-      background: var(--surface); border: 1px solid var(--border);
-      color: var(--muted); font-size: 16px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s;
-    }
+    .icon-btn { width: 34px; height: 34px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
     .icon-btn:active { opacity: 0.7; transform: scale(0.95); }
     .header-actions { display: flex; gap: 8px; }
-
-    /* Tabs */
     .tabs { display: flex; background: var(--surface2); border-bottom: 1px solid var(--border); }
     .tab { flex: 1; padding: 11px 4px; font-size: 11px; border: none; background: transparent; color: var(--muted); cursor: pointer; font-family: var(--sans); border-bottom: 2px solid transparent; transition: all 0.2s; }
     .tab.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--bg); }
-
-    /* Content */
     .content { padding: 16px; flex: 1; overflow-y: auto; padding-bottom: 32px; }
-
-    /* Cards */
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
     .card-hero { background: linear-gradient(135deg, var(--surface2), #0f3460); }
-
-    /* Forms */
     label { display: block; font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
-    input[type=text], input[type=number], input[type=date] {
-      width: 100%; padding: 10px 12px;
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 9px; color: var(--text);
-      font-family: var(--sans); font-size: 15px;
-      transition: border-color 0.15s; color-scheme: dark;
-    }
+    input[type=text], input[type=number], input[type=date] { width: 100%; padding: 10px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 9px; color: var(--text); font-family: var(--sans); font-size: 15px; transition: border-color 0.15s; color-scheme: dark; }
     input:focus { outline: none; border-color: var(--accent); }
     .form-row { margin-bottom: 14px; }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-
-    /* Buttons */
-    .btn-primary {
-      background: linear-gradient(135deg, #e63946, #c1121f);
-      color: #fff; border: none; border-radius: 10px;
-      padding: 12px 20px; cursor: pointer;
-      font-family: var(--sans); font-size: 14px; font-weight: 600;
-      transition: opacity 0.15s, transform 0.1s; width: 100%;
-    }
+    .btn-primary { background: linear-gradient(135deg, #e63946, #c1121f); color: #fff; border: none; border-radius: 10px; padding: 12px 20px; cursor: pointer; font-family: var(--sans); font-size: 14px; font-weight: 600; transition: opacity 0.15s, transform 0.1s; width: 100%; }
     .btn-primary:active { opacity: 0.85; transform: scale(0.98); }
     .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-secondary {
-      background: var(--surface); color: var(--muted);
-      border: 1px solid var(--border); border-radius: 10px;
-      padding: 11px 20px; cursor: pointer;
-      font-family: var(--sans); font-size: 14px;
-    }
+    .btn-secondary { background: var(--surface); color: var(--muted); border: 1px solid var(--border); border-radius: 10px; padding: 11px 20px; cursor: pointer; font-family: var(--sans); font-size: 14px; }
     .toggle-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-    .toggle-btn {
-      padding: 10px 8px; border-radius: 9px; border: 1px solid var(--border);
-      background: var(--surface); color: var(--muted);
-      cursor: pointer; font-family: var(--sans); font-size: 13px;
-      transition: all 0.15s; text-align: center; line-height: 1.4;
-    }
+    .toggle-btn { padding: 10px 8px; border-radius: 9px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; font-family: var(--sans); font-size: 13px; transition: all 0.15s; text-align: center; line-height: 1.4; }
     .toggle-btn.active { border-color: var(--accent2); background: #0a1a12; color: var(--accent2); }
     .toggle-btn.active-red { border-color: var(--accent); background: #1a0a0c; color: var(--accent); }
     .toggle-btn:disabled { opacity: 0.4; cursor: not-allowed; }
     .toggle-btn small { display: block; font-size: 11px; opacity: 0.7; margin-top: 2px; }
-
-    /* Balance */
-    .balance-box {
-      border-radius: 10px; padding: 14px; text-align: center; margin-bottom: 12px;
-    }
+    .balance-box { border-radius: 10px; padding: 14px; text-align: center; margin-bottom: 12px; }
     .balance-owed { background: #1a0a0c; border: 1px solid #e6394633; }
     .balance-ok { background: #0a1a12; border: 1px solid #2cb67d33; }
     .balance-label { font-size: 11px; color: var(--muted); margin-bottom: 5px; }
     .balance-amount { font-size: 24px; font-family: var(--serif); }
     .balance-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
-
-    /* People grid */
     .people-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
     .person-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
     .person-name { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
     .person-paid { font-size: 20px; font-family: var(--serif); color: var(--text); }
     .person-should { font-size: 12px; color: var(--muted); margin-top: 4px; }
     .person-ratio { font-size: 10px; color: #555577; margin-bottom: 4px; }
-
-    /* Expense list */
     .expense-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .expense-item.settled { opacity: 0.55; border-color: #1e1e38; }
     .expense-name { font-weight: 600; color: var(--text); margin-bottom: 4px; font-size: 15px; }
     .expense-meta { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
     .expense-split { font-size: 12px; color: #666688; }
     .expense-amount { font-size: 19px; font-family: var(--serif); color: var(--accent); white-space: nowrap; }
-    .btn-delete { margin-top: 6px; padding: 3px 8px; font-size: 11px; background: transparent; border: 1px solid #33222233; color: #664444; border-radius: 6px; cursor: pointer; font-family: var(--sans); display: block; }
-
-    /* Modal */
+    .btn-delete { margin-top: 4px; padding: 3px 8px; font-size: 11px; background: transparent; border: 1px solid #33222233; color: #664444; border-radius: 6px; cursor: pointer; font-family: var(--sans); display: block; width: 100%; }
+    .btn-edit { margin-top: 4px; padding: 3px 8px; font-size: 11px; background: transparent; border: 1px solid #22334433; color: #446688; border-radius: 6px; cursor: pointer; font-family: var(--sans); display: block; width: 100%; }
+    .settled-badge { display: inline-block; font-size: 10px; background: #1a2a1a; color: var(--accent2); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
     .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
     .modal { background: var(--surface2); border: 1px solid var(--border); border-radius: 18px; padding: 24px; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; }
     .modal-title { font-family: var(--serif); font-size: 20px; margin-bottom: 16px; }
     .modal-actions { display: flex; gap: 10px; margin-top: 8px; }
-
-    /* Toast */
     #toast { position: fixed; top: 16px; left: 50%; transform: translateX(-50%) translateY(-60px); background: var(--accent2); color: #fff; padding: 10px 22px; border-radius: 30px; font-size: 14px; z-index: 999; transition: transform 0.3s cubic-bezier(.34,1.56,.64,1); pointer-events: none; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
     #toast.show { transform: translateX(-50%) translateY(0); }
     #toast.err { background: var(--accent); }
-
-    /* Loading */
     #loading { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999; gap: 16px; }
     .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
-
-    /* Misc */
     .empty { text-align: center; padding: 48px 20px; color: var(--muted); }
     .empty-icon { font-size: 44px; margin-bottom: 12px; }
     .section-label { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
@@ -158,15 +100,12 @@
     .history-date { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
     .history-main { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
     .history-sub { font-size: 12px; color: var(--muted); }
-
+    .filter-row { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
+    .filter-btn { padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-size: 12px; cursor: pointer; white-space: nowrap; font-family: var(--sans); }
+    .filter-btn.active { border-color: var(--accent); color: var(--accent); background: #1a0a0c; }
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
     .fadein { animation: fadein 0.25s ease; }
-
-    /* Ratio bar */
-    .ratio-bar { height: 6px; border-radius: 3px; background: var(--border); overflow: hidden; margin: 8px 0; }
-    .ratio-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent3)); border-radius: 3px; transition: width 0.5s ease; }
-
     .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; }
     .dot-red { background: var(--accent); }
     .dot-green { background: var(--accent2); }
@@ -208,13 +147,12 @@
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast"></div>
 
 <!-- Config Modal -->
 <div id="modal-config" class="modal-backdrop" style="display:none" onclick="closeConfigOutside(event)">
   <div class="modal">
-    <div class="modal-title">⚙ Configuración del mes</div>
+    <div class="modal-title">⚙ Configuración</div>
     <div class="form-row">
       <label>Nombre persona 1</label>
       <input type="text" id="cfg-name1" placeholder="Ej: Guille" />
@@ -252,15 +190,57 @@
   </div>
 </div>
 
+<!-- Edit Expense Modal -->
+<div id="modal-edit" class="modal-backdrop" style="display:none" onclick="closeEditOutside(event)">
+  <div class="modal">
+    <div class="modal-title">✏️ Editar gasto</div>
+    <div class="form-row">
+      <label>Descripción</label>
+      <input type="text" id="edit-name" />
+    </div>
+    <div class="form-grid">
+      <div>
+        <label>Monto $</label>
+        <input type="number" id="edit-amount" oninput="updateEditPreview()" />
+      </div>
+      <div>
+        <label>Fecha</label>
+        <input type="date" id="edit-date" />
+      </div>
+    </div>
+    <label>¿Quién pagó?</label>
+    <div class="toggle-group">
+      <button class="toggle-btn" id="edit-paid-p1" onclick="editSelectPaid('p1')"></button>
+      <button class="toggle-btn" id="edit-paid-p2" onclick="editSelectPaid('p2')"></button>
+    </div>
+    <label>División</label>
+    <div class="toggle-group">
+      <button class="toggle-btn" id="edit-split-equal" onclick="editSelectSplit('equal')">
+        ⚖ Partes iguales<small>50% / 50%</small>
+      </button>
+      <button class="toggle-btn" id="edit-split-prop" onclick="editSelectSplit('proportional')">
+        📊 Proporcional<small id="edit-prop-label">—</small>
+      </button>
+    </div>
+    <div id="edit-preview-box" style="display:none" class="preview-box">
+      <div style="color:var(--muted);margin-bottom:6px;font-size:12px">Vista previa:</div>
+      <div class="preview-row">
+        <span id="edit-prev-p1"></span>
+        <span id="edit-prev-p2"></span>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" style="flex:1" onclick="closeEdit()">Cancelar</button>
+      <button class="btn-primary" style="flex:2" id="btn-save-edit" onclick="saveEdit()">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getDatabase, ref, onValue, set, push, remove, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  // ============================================================
-  // 🔧 REEMPLAZÁ ESTOS VALORES CON TUS CREDENCIALES DE FIREBASE
-  // (Paso 4 de las instrucciones)
-  // ============================================================
   const firebaseConfig = {
     apiKey: "AIzaSyAQZzNSxVDKiSsl6i-6SWi9ySR9zQ_W6gs",
     authDomain: "gastos-compartidos-c5937.firebaseapp.com",
@@ -269,13 +249,10 @@
     storageBucket: "gastos-compartidos-c5937.firebasestorage.app",
     messagingSenderId: "687609608695",
     appId: "1:687609608695:web:813cd3a35450a14c94d6f2"
-};
-  // ============================================================
+  };
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
-
-  // Expose to global
   window._db = db;
   window._ref = ref;
   window._onValue = onValue;
@@ -288,206 +265,134 @@
 </script>
 
 <script>
-// ─── State ────────────────────────────────────────────────────
 let state = {
   config: { name1: "Yo", name2: "Mi amor", income1: 0, income2: 0 },
   expenses: {},
   history: {}
 };
 let currentTab = 'dashboard';
-let listeners = [];
+let listFilter = 'all'; // 'all' | 'pending' | 'settled'
+let editingId = null;
+let editFormState = { paidBy: "p1", splitType: "equal" };
 
 const MONTHS = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 
-function fmt(n) {
-  return Number(n).toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-function today() {
-  return new Date().toISOString().split("T")[0];
-}
-function showToast(msg, type = "ok") {
+function fmt(n) { return Number(n).toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function today() { return new Date().toISOString().split("T")[0]; }
+function showToast(msg, type="ok") {
   const t = document.getElementById("toast");
   t.textContent = msg;
-  t.className = type === "err" ? "err show" : "show";
+  t.className = type==="err" ? "err show" : "show";
   setTimeout(() => { t.className = ""; }, 3000);
 }
 
-// ─── Firebase helpers ─────────────────────────────────────────
 function dbRef(path) { return window._ref(window._db, path); }
 function dbSet(path, val) { return window._set(dbRef(path), val); }
 function dbPush(path, val) { return window._push(dbRef(path), val); }
 function dbRemove(path) { return window._remove(dbRef(path)); }
+function dbUpdate(path, val) { return window._update(dbRef(path), val); }
 
-function listenPath(path, cb) {
-  const unsub = window._onValue(dbRef(path), snap => cb(snap.val()));
-  listeners.push(unsub);
-  return unsub;
-}
-
-// ─── Init ─────────────────────────────────────────────────────
 function initApp() {
-  // Listen config
-  listenPath("config", val => {
-    if (val) state.config = { ...state.config, ...val };
-    renderAll();
-  });
-  // Listen expenses
-  listenPath("expenses", val => {
-    state.expenses = val || {};
-    renderAll();
-  });
-  // Listen history
-  listenPath("history", val => {
-    state.history = val || {};
-    renderAll();
-  });
-
-  document.getElementById("loading").style.display = "none";
-  document.getElementById("app").style.display = "flex";
-  document.getElementById("app").style.flexDirection = "column";
+  window._onValue(dbRef("config"), snap => { if(snap.val()) state.config={...state.config,...snap.val()}; renderAll(); });
+  window._onValue(dbRef("expenses"), snap => { state.expenses=snap.val()||{}; renderAll(); });
+  window._onValue(dbRef("history"), snap => { state.history=snap.val()||{}; renderAll(); });
+  document.getElementById("loading").style.display="none";
+  document.getElementById("app").style.display="flex";
+  document.getElementById("app").style.flexDirection="column";
   updateSyncLabel();
-  renderAll();
 }
 
-function updateSyncLabel() {
-  document.getElementById("sync-label").textContent = "En vivo · " + new Date().toLocaleTimeString("es-AR");
-}
+function updateSyncLabel() { document.getElementById("sync-label").textContent="En vivo · "+new Date().toLocaleTimeString("es-AR"); }
 
 window.syncNow = function() {
-  const btn = document.getElementById("btn-refresh");
-  btn.style.animation = "spin 0.8s linear";
-  setTimeout(() => { btn.style.animation = ""; }, 800);
-  updateSyncLabel();
-  showToast("Sincronizado ✓");
+  const btn=document.getElementById("btn-refresh");
+  btn.style.animation="spin 0.8s linear"; setTimeout(()=>{btn.style.animation="";},800);
+  updateSyncLabel(); showToast("Sincronizado ✓");
 };
 
-// ─── Balance calc ─────────────────────────────────────────────
+// ─── Balance (only counts non-settled expenses) ───────────────
 function calcBalance() {
-  const inc1 = Number(state.config.income1) || 0;
-  const inc2 = Number(state.config.income2) || 0;
-  const totalInc = inc1 + inc2;
-  const ratio1 = totalInc > 0 ? inc1 / totalInc : 0.5;
-  const ratio2 = totalInc > 0 ? inc2 / totalInc : 0.5;
-
-  let paid1 = 0, paid2 = 0, shouldPay1 = 0, shouldPay2 = 0, total = 0;
-  const list = Object.entries(state.expenses).map(([id, e]) => ({ id, ...e }));
-
-  list.forEach(exp => {
-    total += exp.amount;
-    if (exp.paidBy === "p1") paid1 += exp.amount;
-    else paid2 += exp.amount;
-    if (exp.splitType === "equal") {
-      shouldPay1 += exp.amount * 0.5;
-      shouldPay2 += exp.amount * 0.5;
-    } else {
-      shouldPay1 += exp.amount * ratio1;
-      shouldPay2 += exp.amount * ratio2;
-    }
+  const inc1=Number(state.config.income1)||0, inc2=Number(state.config.income2)||0;
+  const totalInc=inc1+inc2;
+  const ratio1=totalInc>0?inc1/totalInc:0.5, ratio2=totalInc>0?inc2/totalInc:0.5;
+  let paid1=0,paid2=0,shouldPay1=0,shouldPay2=0,total=0;
+  const list=Object.entries(state.expenses).map(([id,e])=>({id,...e}));
+  // Only unsettled expenses count toward current balance
+  const active=list.filter(e=>!e.settled);
+  active.forEach(exp=>{
+    total+=exp.amount;
+    if(exp.paidBy==="p1") paid1+=exp.amount; else paid2+=exp.amount;
+    if(exp.splitType==="equal"){ shouldPay1+=exp.amount*0.5; shouldPay2+=exp.amount*0.5; }
+    else { shouldPay1+=exp.amount*ratio1; shouldPay2+=exp.amount*ratio2; }
   });
-
-  const diff1 = paid1 - shouldPay1;
-  const debtAmount = Math.abs(diff1);
-  const debtor = diff1 > 0.005 ? "p2" : diff1 < -0.005 ? "p1" : null;
-  const creditor = debtor === "p1" ? "p2" : "p1";
-
-  return { paid1, paid2, shouldPay1, shouldPay2, total, debtor, creditor, debtAmount, ratio1, ratio2, count: list.length };
+  const diff1=paid1-shouldPay1;
+  const debtAmount=Math.abs(diff1);
+  const debtor=diff1>0.005?"p2":diff1<-0.005?"p1":null;
+  const creditor=debtor==="p1"?"p2":"p1";
+  return {paid1,paid2,shouldPay1,shouldPay2,total,debtor,creditor,debtAmount,ratio1,ratio2,count:active.length,totalCount:list.length};
 }
 
-// ─── Render ───────────────────────────────────────────────────
+// ─── Render all ───────────────────────────────────────────────
 function renderAll() {
-  const n1 = state.config.name1 || "Yo";
-  const n2 = state.config.name2 || "Mi amor";
-  document.getElementById("header-names").textContent = n1 + " & " + n2;
-  renderDashboard();
-  renderAdd();
-  renderList();
-  renderHistory();
+  const n1=state.config.name1||"Yo", n2=state.config.name2||"Mi amor";
+  document.getElementById("header-names").textContent=n1+" & "+n2;
+  renderDashboard(); renderList(); renderHistory();
+  if(currentTab==="add") renderAdd();
 }
 
+// ─── Dashboard ────────────────────────────────────────────────
 function renderDashboard() {
-  const bal = calcBalance();
-  const c = state.config;
-  const n1 = c.name1 || "Yo", n2 = c.name2 || "Mi amor";
-  const inc1 = Number(c.income1) || 0, inc2 = Number(c.income2) || 0;
-  const now = new Date();
-
-  let html = `
+  const bal=calcBalance(), c=state.config;
+  const n1=c.name1||"Yo", n2=c.name2||"Mi amor";
+  const inc1=Number(c.income1)||0, inc2=Number(c.income2)||0;
+  const now=new Date();
+  let html=`
     <div style="text-align:center;margin-bottom:16px;color:var(--muted);font-size:13px">${MONTHS[now.getMonth()]} ${now.getFullYear()}</div>
-
     <div class="card card-hero" style="margin-bottom:12px">
-      <div class="section-label">Total gastado</div>
+      <div class="section-label">Saldo pendiente de saldar</div>
       <div style="font-family:var(--serif);font-size:38px;margin-bottom:4px">$${fmt(bal.total)}</div>
-      <div style="font-size:13px;color:var(--muted)">${bal.count} gasto${bal.count !== 1 ? "s" : ""} registrado${bal.count !== 1 ? "s" : ""}</div>
+      <div style="font-size:13px;color:var(--muted)">${bal.count} gasto${bal.count!==1?"s":""} pendiente${bal.count!==1?"s":""} · ${bal.totalCount} en total</div>
     </div>
-
     <div class="people-grid">
-      ${["p1","p2"].map((p,i) => {
-        const name = i===0 ? n1 : n2;
-        const inc = i===0 ? inc1 : inc2;
-        const paid = i===0 ? bal.paid1 : bal.paid2;
-        const should = i===0 ? bal.shouldPay1 : bal.shouldPay2;
-        const ratio = i===0 ? bal.ratio1 : bal.ratio2;
-        return `
-        <div class="person-card">
+      ${["p1","p2"].map((p,i)=>{
+        const name=i===0?n1:n2, inc=i===0?inc1:inc2;
+        const paid=i===0?bal.paid1:bal.paid2, should=i===0?bal.shouldPay1:bal.shouldPay2;
+        const ratio=i===0?bal.ratio1:bal.ratio2;
+        return `<div class="person-card">
           <div class="person-name">${name}</div>
-          ${inc > 0 ? `<div class="person-ratio">Ingreso: $${fmt(inc)}<br>Proporción: ${(ratio*100).toFixed(1)}%</div>` : ""}
-          <div style="font-size:11px;color:var(--muted);margin-bottom:2px">Pagó:</div>
+          ${inc>0?`<div class="person-ratio">Ingreso: $${fmt(inc)}<br>Proporción: ${(ratio*100).toFixed(1)}%</div>`:""}
+          <div style="font-size:11px;color:var(--muted);margin-bottom:2px">Pagó (pendiente):</div>
           <div class="person-paid">$${fmt(paid)}</div>
           <div class="person-should">Debería: $${fmt(should)}</div>
         </div>`;
       }).join("")}
-    </div>
-  `;
-
-  if (bal.debtor) {
-    const dName = bal.debtor === "p1" ? n1 : n2;
-    const cName = bal.creditor === "p1" ? n1 : n2;
-    html += `
-      <div class="balance-box balance-owed">
-        <div class="balance-label">Saldo pendiente</div>
-        <div class="balance-amount" style="color:var(--accent)"><span class="dot dot-red"></span>${dName} debe $${fmt(bal.debtAmount)}</div>
-        <div class="balance-sub">a ${cName}</div>
-      </div>`;
+    </div>`;
+  if(bal.debtor){
+    const dName=bal.debtor==="p1"?n1:n2, cName=bal.creditor==="p1"?n1:n2;
+    html+=`<div class="balance-box balance-owed">
+      <div class="balance-label">Saldo pendiente</div>
+      <div class="balance-amount" style="color:var(--accent)"><span class="dot dot-red"></span>${dName} debe $${fmt(bal.debtAmount)}</div>
+      <div class="balance-sub">a ${cName}</div>
+    </div>`;
   } else {
-    html += `
-      <div class="balance-box balance-ok">
-        <div class="balance-amount" style="color:var(--accent2);font-size:18px">✓ ¡Están al día!</div>
-      </div>`;
+    html+=`<div class="balance-box balance-ok"><div class="balance-amount" style="color:var(--accent2);font-size:18px">✓ ¡Están al día!</div></div>`;
   }
-
-  if (bal.count > 0) {
-    html += `<button class="btn-primary" style="margin-top:4px" onclick="openSettle()">🤝 Saldar deuda del mes</button>`;
-  }
-
-  if (inc1 === 0 && inc2 === 0) {
-    html += `<div class="tip-box">💡 Cargá los ingresos en ⚙ Configuración para habilitar la división proporcional.</div>`;
-  }
-
-  document.getElementById("tab-dashboard").innerHTML = html;
+  if(bal.count>0) html+=`<button class="btn-primary" style="margin-top:4px" onclick="openSettle()">🤝 Saldar deuda</button>`;
+  if(inc1===0&&inc2===0) html+=`<div class="tip-box">💡 Cargá los ingresos en ⚙ Configuración para habilitar la división proporcional.</div>`;
+  document.getElementById("tab-dashboard").innerHTML=html;
 }
 
+// ─── Add expense ──────────────────────────────────────────────
 function renderAdd() {
-  const c = state.config;
-  const n1 = c.name1 || "Yo", n2 = c.name2 || "Mi amor";
-  const inc1 = Number(c.income1) || 0, inc2 = Number(c.income2) || 0;
-  const bal = calcBalance();
-  const hasInc = inc1 > 0 && inc2 > 0;
-
-  document.getElementById("tab-add").innerHTML = `
+  const c=state.config, n1=c.name1||"Yo", n2=c.name2||"Mi amor";
+  const inc1=Number(c.income1)||0, inc2=Number(c.income2)||0;
+  const bal=calcBalance(), hasInc=inc1>0&&inc2>0;
+  document.getElementById("tab-add").innerHTML=`
     <div style="font-family:var(--serif);font-size:20px;margin-bottom:16px">Nuevo gasto</div>
-    <div class="form-row">
-      <label>Descripción</label>
-      <input type="text" id="f-name" placeholder="Ej: Supermercado, cena, luz..." />
-    </div>
+    <div class="form-row"><label>Descripción</label><input type="text" id="f-name" placeholder="Ej: Supermercado, cena, luz..." /></div>
     <div class="form-grid">
-      <div>
-        <label>Monto $</label>
-        <input type="number" id="f-amount" placeholder="0" oninput="updatePreview()" />
-      </div>
-      <div>
-        <label>Fecha</label>
-        <input type="date" id="f-date" value="${today()}" />
-      </div>
+      <div><label>Monto $</label><input type="number" id="f-amount" placeholder="0" oninput="updatePreview()" /></div>
+      <div><label>Fecha</label><input type="date" id="f-date" value="${today()}" /></div>
     </div>
     <label>¿Quién pagó?</label>
     <div class="toggle-group">
@@ -496,247 +401,304 @@ function renderAdd() {
     </div>
     <label>División</label>
     <div class="toggle-group">
-      <button class="toggle-btn active" id="split-equal" onclick="selectSplit('equal')">
-        ⚖ Partes iguales<small>50% / 50%</small>
-      </button>
-      <button class="toggle-btn" id="split-prop" onclick="selectSplit('proportional')" ${hasInc ? "" : "disabled"}>
-        📊 Proporcional<small>${hasInc ? `${(bal.ratio1*100).toFixed(0)}% / ${(bal.ratio2*100).toFixed(0)}%` : "Configurar ingresos"}</small>
-      </button>
+      <button class="toggle-btn active" id="split-equal" onclick="selectSplit('equal')">⚖ Partes iguales<small>50% / 50%</small></button>
+      <button class="toggle-btn" id="split-prop" onclick="selectSplit('proportional')" ${hasInc?"":"disabled"}>📊 Proporcional<small>${hasInc?`${(bal.ratio1*100).toFixed(0)}% / ${(bal.ratio2*100).toFixed(0)}%`:"Configurar ingresos"}</small></button>
     </div>
     <div id="preview-box" style="display:none" class="preview-box">
       <div style="color:var(--muted);margin-bottom:6px;font-size:12px">Vista previa:</div>
-      <div class="preview-row">
-        <span id="prev-p1"></span>
-        <span id="prev-p2"></span>
-      </div>
+      <div class="preview-row"><span id="prev-p1"></span><span id="prev-p2"></span></div>
     </div>
-    <button class="btn-primary" id="btn-add" onclick="addExpense()">➕ Agregar gasto</button>
-  `;
-
-  window._formState = { paidBy: "p1", splitType: "equal" };
+    <button class="btn-primary" id="btn-add" onclick="addExpense()">➕ Agregar gasto</button>`;
+  window._formState={paidBy:"p1",splitType:"equal"};
 }
 
-window.selectPaid = function(p) {
-  window._formState.paidBy = p;
-  document.getElementById("paid-p1").className = "toggle-btn" + (p==="p1"?" active-red":"");
-  document.getElementById("paid-p2").className = "toggle-btn" + (p==="p2"?" active-red":"");
+window.selectPaid=function(p){
+  window._formState.paidBy=p;
+  document.getElementById("paid-p1").className="toggle-btn"+(p==="p1"?" active-red":"");
+  document.getElementById("paid-p2").className="toggle-btn"+(p==="p2"?" active-red":"");
 };
-window.selectSplit = function(s) {
-  window._formState.splitType = s;
-  document.getElementById("split-equal").className = "toggle-btn" + (s==="equal"?" active":"");
-  document.getElementById("split-prop").className = "toggle-btn" + (s==="proportional"?" active":"");
+window.selectSplit=function(s){
+  window._formState.splitType=s;
+  document.getElementById("split-equal").className="toggle-btn"+(s==="equal"?" active":"");
+  document.getElementById("split-prop").className="toggle-btn"+(s==="proportional"?" active":"");
   updatePreview();
 };
-window.updatePreview = function() {
-  const amt = Number(document.getElementById("f-amount")?.value);
-  const bal = calcBalance();
-  const c = state.config;
-  const n1 = c.name1||"Yo", n2 = c.name2||"Mi amor";
-  const box = document.getElementById("preview-box");
-  if (!box) return;
-  if (!amt || amt <= 0) { box.style.display="none"; return; }
-  const s = window._formState?.splitType || "equal";
-  const sp1 = s === "equal" ? amt * 0.5 : amt * bal.ratio1;
-  const sp2 = s === "equal" ? amt * 0.5 : amt * bal.ratio2;
-  box.style.display = "block";
-  document.getElementById("prev-p1").textContent = `${n1}: $${fmt(sp1)}`;
-  document.getElementById("prev-p2").textContent = `${n2}: $${fmt(sp2)}`;
+window.updatePreview=function(){
+  const amt=Number(document.getElementById("f-amount")?.value);
+  const bal=calcBalance(), c=state.config;
+  const box=document.getElementById("preview-box"); if(!box) return;
+  if(!amt||amt<=0){box.style.display="none";return;}
+  const s=window._formState?.splitType||"equal";
+  const sp1=s==="equal"?amt*0.5:amt*bal.ratio1, sp2=s==="equal"?amt*0.5:amt*bal.ratio2;
+  box.style.display="block";
+  document.getElementById("prev-p1").textContent=`${c.name1||"Yo"}: $${fmt(sp1)}`;
+  document.getElementById("prev-p2").textContent=`${c.name2||"Mi amor"}: $${fmt(sp2)}`;
 };
 
-window.addExpense = async function() {
-  const name = document.getElementById("f-name")?.value?.trim();
-  const amount = Number(document.getElementById("f-amount")?.value);
-  const date = document.getElementById("f-date")?.value;
-  const { paidBy, splitType } = window._formState || {};
-
-  if (!name || !amount || amount <= 0 || !date) {
-    showToast("Completá todos los campos", "err"); return;
-  }
-  const btn = document.getElementById("btn-add");
-  btn.disabled = true; btn.textContent = "Guardando...";
-
+window.addExpense=async function(){
+  const name=document.getElementById("f-name")?.value?.trim();
+  const amount=Number(document.getElementById("f-amount")?.value);
+  const date=document.getElementById("f-date")?.value;
+  const {paidBy,splitType}=window._formState||{};
+  if(!name||!amount||amount<=0||!date){showToast("Completá todos los campos","err");return;}
+  const btn=document.getElementById("btn-add");
+  btn.disabled=true; btn.textContent="Guardando...";
   try {
-    await dbPush("expenses", { name, amount, date, paidBy, splitType, ts: Date.now() });
+    await dbPush("expenses",{name,amount,date,paidBy,splitType,settled:false,ts:Date.now()});
     showToast("Gasto agregado ✓");
     renderAdd();
-    // Switch to dashboard after adding
-    setTimeout(() => switchTab('dashboard', document.querySelector('.tab')), 600);
-  } catch(e) {
-    showToast("Error al guardar. Revisá la conexión", "err");
-    btn.disabled = false; btn.textContent = "➕ Agregar gasto";
+    setTimeout(()=>switchTab('dashboard'),600);
+  } catch(e){
+    showToast("Error al guardar","err");
+    btn.disabled=false; btn.textContent="➕ Agregar gasto";
   }
 };
 
+// ─── Expense list ─────────────────────────────────────────────
 function renderList() {
-  const expenses = Object.entries(state.expenses).map(([id,e])=>({id,...e}));
-  const bal = calcBalance();
-  const c = state.config;
-  const n1 = c.name1||"Yo", n2 = c.name2||"Mi amor";
+  const allExp=Object.entries(state.expenses).map(([id,e])=>({id,...e}));
+  const bal=calcBalance(), c=state.config;
+  const n1=c.name1||"Yo", n2=c.name2||"Mi amor";
 
-  if (expenses.length === 0) {
-    document.getElementById("tab-list").innerHTML = `<div class="empty"><div class="empty-icon">📭</div>Sin gastos este mes</div>`;
+  if(allExp.length===0){
+    document.getElementById("tab-list").innerHTML=`<div class="empty"><div class="empty-icon">📭</div>Sin gastos registrados</div>`;
     return;
   }
 
-  const sorted = expenses.sort((a,b) => (b.date||"") > (a.date||"") ? 1 : -1);
-  let html = `<div class="section-label">${expenses.length} gasto${expenses.length!==1?"s":""}</div>`;
+  const filtered = listFilter==="pending" ? allExp.filter(e=>!e.settled)
+                 : listFilter==="settled"  ? allExp.filter(e=>e.settled)
+                 : allExp;
+  const sorted=filtered.sort((a,b)=>(b.date||"")>(a.date||"")?1:-1);
 
-  sorted.forEach(exp => {
-    const sp1 = exp.splitType==="equal" ? exp.amount*0.5 : exp.amount*bal.ratio1;
-    const sp2 = exp.splitType==="equal" ? exp.amount*0.5 : exp.amount*bal.ratio2;
-    const pName = exp.paidBy==="p1" ? n1 : n2;
-    const dateStr = exp.date ? new Date(exp.date+"T12:00:00").toLocaleDateString("es-AR") : "";
-    html += `
-      <div class="expense-item">
+  const pendingCount=allExp.filter(e=>!e.settled).length;
+  const settledCount=allExp.filter(e=>e.settled).length;
+
+  let html=`
+    <div class="filter-row">
+      <button class="filter-btn ${listFilter==="all"?"active":""}" onclick="setFilter('all')">Todos (${allExp.length})</button>
+      <button class="filter-btn ${listFilter==="pending"?"active":""}" onclick="setFilter('pending')">Pendientes (${pendingCount})</button>
+      <button class="filter-btn ${listFilter==="settled"?"active":""}" onclick="setFilter('settled')">Saldados (${settledCount})</button>
+    </div>`;
+
+  if(sorted.length===0){
+    html+=`<div class="empty" style="padding:32px 0"><div class="empty-icon">🔍</div>Sin gastos en este filtro</div>`;
+  }
+
+  sorted.forEach(exp=>{
+    const sp1=exp.splitType==="equal"?exp.amount*0.5:exp.amount*bal.ratio1;
+    const sp2=exp.splitType==="equal"?exp.amount*0.5:exp.amount*bal.ratio2;
+    const pName=exp.paidBy==="p1"?n1:n2;
+    const dateStr=exp.date?new Date(exp.date+"T12:00:00").toLocaleDateString("es-AR"):"";
+    html+=`
+      <div class="expense-item ${exp.settled?"settled":""}">
         <div style="flex:1">
-          <div class="expense-name">${exp.name}</div>
+          <div class="expense-name">${exp.name}${exp.settled?`<span class="settled-badge">✓ saldado</span>`:""}</div>
           <div class="expense-meta">${dateStr} · Pagó ${pName}</div>
           <div class="expense-split">${exp.splitType==="equal"?"⚖ Iguales":"📊 Proporcional"} · ${n1}: $${fmt(sp1)} / ${n2}: $${fmt(sp2)}</div>
         </div>
-        <div style="text-align:right">
+        <div style="text-align:right;min-width:80px">
           <div class="expense-amount">$${fmt(exp.amount)}</div>
+          ${!exp.settled?`<button class="btn-edit" onclick="openEdit('${exp.id}')">✏️ editar</button>`:""}
           <button class="btn-delete" onclick="deleteExpense('${exp.id}')">✕ borrar</button>
         </div>
       </div>`;
   });
 
-  document.getElementById("tab-list").innerHTML = html;
+  document.getElementById("tab-list").innerHTML=html;
 }
 
-window.deleteExpense = async function(id) {
-  if (!confirm("¿Borrar este gasto?")) return;
-  await dbRemove("expenses/" + id);
+window.setFilter=function(f){
+  listFilter=f;
+  renderList();
+};
+
+window.deleteExpense=async function(id){
+  if(!confirm("¿Borrar este gasto?")) return;
+  await dbRemove("expenses/"+id);
   showToast("Gasto eliminado");
 };
 
+// ─── Edit modal ───────────────────────────────────────────────
+window.openEdit=function(id){
+  const exp={...state.expenses[id], id};
+  if(!exp) return;
+  editingId=id;
+  editFormState={paidBy:exp.paidBy||"p1", splitType:exp.splitType||"equal"};
+  const c=state.config, n1=c.name1||"Yo", n2=c.name2||"Mi amor";
+  const bal=calcBalance();
+  const hasInc=(Number(c.income1)||0)>0&&(Number(c.income2)||0)>0;
+
+  document.getElementById("edit-name").value=exp.name||"";
+  document.getElementById("edit-amount").value=exp.amount||"";
+  document.getElementById("edit-date").value=exp.date||today();
+  document.getElementById("edit-paid-p1").textContent=n1;
+  document.getElementById("edit-paid-p2").textContent=n2;
+  document.getElementById("edit-prop-label").textContent=hasInc?`${(bal.ratio1*100).toFixed(0)}% / ${(bal.ratio2*100).toFixed(0)}%`:"Configurar ingresos";
+  if(!hasInc) document.getElementById("edit-split-prop").disabled=true;
+
+  editSelectPaid(editFormState.paidBy);
+  editSelectSplit(editFormState.splitType);
+  updateEditPreview();
+  document.getElementById("modal-edit").style.display="flex";
+};
+window.closeEdit=function(){ document.getElementById("modal-edit").style.display="none"; editingId=null; };
+window.closeEditOutside=function(e){ if(e.target.classList.contains("modal-backdrop")) closeEdit(); };
+
+window.editSelectPaid=function(p){
+  editFormState.paidBy=p;
+  const c=state.config;
+  document.getElementById("edit-paid-p1").className="toggle-btn"+(p==="p1"?" active-red":"");
+  document.getElementById("edit-paid-p2").className="toggle-btn"+(p==="p2"?" active-red":"");
+};
+window.editSelectSplit=function(s){
+  editFormState.splitType=s;
+  document.getElementById("edit-split-equal").className="toggle-btn"+(s==="equal"?" active":"");
+  document.getElementById("edit-split-prop").className="toggle-btn"+(s==="proportional"?" active":"");
+  updateEditPreview();
+};
+window.updateEditPreview=function(){
+  const amt=Number(document.getElementById("edit-amount")?.value);
+  const bal=calcBalance(), c=state.config;
+  const box=document.getElementById("edit-preview-box"); if(!box) return;
+  if(!amt||amt<=0){box.style.display="none";return;}
+  const s=editFormState.splitType||"equal";
+  const sp1=s==="equal"?amt*0.5:amt*bal.ratio1, sp2=s==="equal"?amt*0.5:amt*bal.ratio2;
+  box.style.display="block";
+  document.getElementById("edit-prev-p1").textContent=`${c.name1||"Yo"}: $${fmt(sp1)}`;
+  document.getElementById("edit-prev-p2").textContent=`${c.name2||"Mi amor"}: $${fmt(sp2)}`;
+};
+window.saveEdit=async function(){
+  if(!editingId) return;
+  const name=document.getElementById("edit-name").value.trim();
+  const amount=Number(document.getElementById("edit-amount").value);
+  const date=document.getElementById("edit-date").value;
+  if(!name||!amount||amount<=0||!date){showToast("Completá todos los campos","err");return;}
+  const btn=document.getElementById("btn-save-edit");
+  btn.disabled=true; btn.textContent="Guardando...";
+  try {
+    await dbUpdate("expenses/"+editingId,{name,amount,date,paidBy:editFormState.paidBy,splitType:editFormState.splitType});
+    closeEdit();
+    showToast("Gasto actualizado ✓");
+  } catch(e){
+    showToast("Error al guardar","err");
+    btn.disabled=false; btn.textContent="Guardar cambios";
+  }
+};
+
+// ─── History ──────────────────────────────────────────────────
 function renderHistory() {
-  const hist = Object.entries(state.history||{}).map(([id,h])=>({id,...h}));
-  if (hist.length === 0) {
-    document.getElementById("tab-history").innerHTML = `<div class="empty"><div class="empty-icon">📜</div>Sin historial aún</div>`;
+  const hist=Object.entries(state.history||{}).map(([id,h])=>({id,...h}));
+  if(hist.length===0){
+    document.getElementById("tab-history").innerHTML=`<div class="empty"><div class="empty-icon">📜</div>Sin historial aún</div>`;
     return;
   }
-  const sorted = hist.sort((a,b) => (b.ts||0)-(a.ts||0));
-  let html = `<div class="section-label">Cierres anteriores</div>`;
-  sorted.forEach(h => {
-    const dateStr = h.date ? new Date(h.date+"T12:00:00").toLocaleDateString("es-AR") : "";
-    html += `
-      <div class="history-item">
-        <div class="history-date">Saldado el ${dateStr}</div>
-        <div class="history-main">${h.debtorName ? `${h.debtorName} pagó $${fmt(h.amount)}` : "Sin deuda pendiente"}</div>
-        <div class="history-sub">${h.expenseCount||0} gastos · Total: $${fmt(h.total||0)}</div>
-      </div>`;
+  const sorted=hist.sort((a,b)=>(b.ts||0)-(a.ts||0));
+  let html=`<div class="section-label">Cierres anteriores</div>`;
+  sorted.forEach(h=>{
+    const dateStr=h.date?new Date(h.date+"T12:00:00").toLocaleDateString("es-AR"):"";
+    html+=`<div class="history-item">
+      <div class="history-date">Saldado el ${dateStr}</div>
+      <div class="history-main">${h.debtorName?`${h.debtorName} pagó $${fmt(h.amount)}`:"Sin deuda pendiente"}</div>
+      <div class="history-sub">${h.expenseCount||0} gastos marcados · Total: $${fmt(h.total||0)}</div>
+    </div>`;
   });
-  document.getElementById("tab-history").innerHTML = html;
+  document.getElementById("tab-history").innerHTML=html;
 }
 
 // ─── Config modal ─────────────────────────────────────────────
-window.openConfig = function() {
-  const c = state.config;
-  document.getElementById("cfg-name1").value = c.name1||"";
-  document.getElementById("cfg-income1").value = c.income1||"";
-  document.getElementById("cfg-name2").value = c.name2||"";
-  document.getElementById("cfg-income2").value = c.income2||"";
-  document.getElementById("cfg-label1").textContent = c.name1||"persona 1";
-  document.getElementById("cfg-label2").textContent = c.name2||"persona 2";
-  document.getElementById("modal-config").style.display = "flex";
-  // Live ratio preview
-  ["cfg-income1","cfg-income2"].forEach(id => {
-    document.getElementById(id).addEventListener("input", updateCfgRatio);
-  });
+window.openConfig=function(){
+  const c=state.config;
+  document.getElementById("cfg-name1").value=c.name1||"";
+  document.getElementById("cfg-income1").value=c.income1||"";
+  document.getElementById("cfg-name2").value=c.name2||"";
+  document.getElementById("cfg-income2").value=c.income2||"";
+  document.getElementById("cfg-label1").textContent=c.name1||"persona 1";
+  document.getElementById("cfg-label2").textContent=c.name2||"persona 2";
+  document.getElementById("modal-config").style.display="flex";
+  ["cfg-income1","cfg-income2"].forEach(id=>document.getElementById(id).addEventListener("input",updateCfgRatio));
   updateCfgRatio();
 };
-function updateCfgRatio() {
-  const i1 = Number(document.getElementById("cfg-income1").value)||0;
-  const i2 = Number(document.getElementById("cfg-income2").value)||0;
-  const box = document.getElementById("cfg-ratio-preview");
-  if (i1>0 && i2>0) {
-    const t = i1+i2;
-    const n1 = document.getElementById("cfg-name1").value||"Persona 1";
-    const n2 = document.getElementById("cfg-name2").value||"Persona 2";
+function updateCfgRatio(){
+  const i1=Number(document.getElementById("cfg-income1").value)||0;
+  const i2=Number(document.getElementById("cfg-income2").value)||0;
+  const box=document.getElementById("cfg-ratio-preview");
+  if(i1>0&&i2>0){
+    const t=i1+i2, n1=document.getElementById("cfg-name1").value||"Persona 1", n2=document.getElementById("cfg-name2").value||"Persona 2";
     box.style.display="block";
-    box.textContent = `${n1}: ${(i1/t*100).toFixed(1)}% · ${n2}: ${(i2/t*100).toFixed(1)}%`;
-  } else {
-    box.style.display="none";
-  }
+    box.textContent=`${n1}: ${(i1/t*100).toFixed(1)}% · ${n2}: ${(i2/t*100).toFixed(1)}%`;
+  } else { box.style.display="none"; }
 }
-window.closeConfig = function() { document.getElementById("modal-config").style.display="none"; };
-window.closeConfigOutside = function(e) { if(e.target.classList.contains("modal-backdrop")) closeConfig(); };
-window.saveConfig = async function() {
-  const n1 = document.getElementById("cfg-name1").value.trim();
-  const n2 = document.getElementById("cfg-name2").value.trim();
-  if (!n1||!n2) { showToast("Ingresá los dos nombres","err"); return; }
-  await dbSet("config", {
-    name1: n1, name2: n2,
-    income1: Number(document.getElementById("cfg-income1").value)||0,
-    income2: Number(document.getElementById("cfg-income2").value)||0,
-  });
-  closeConfig();
-  showToast("Configuración guardada ✓");
+window.closeConfig=function(){ document.getElementById("modal-config").style.display="none"; };
+window.closeConfigOutside=function(e){ if(e.target.classList.contains("modal-backdrop")) closeConfig(); };
+window.saveConfig=async function(){
+  const n1=document.getElementById("cfg-name1").value.trim(), n2=document.getElementById("cfg-name2").value.trim();
+  if(!n1||!n2){showToast("Ingresá los dos nombres","err");return;}
+  await dbSet("config",{name1:n1,name2:n2,income1:Number(document.getElementById("cfg-income1").value)||0,income2:Number(document.getElementById("cfg-income2").value)||0});
+  closeConfig(); showToast("Configuración guardada ✓");
 };
 
 // ─── Settle modal ─────────────────────────────────────────────
-window.openSettle = function() {
-  const bal = calcBalance();
-  const c = state.config;
-  const n1 = c.name1||"Yo", n2 = c.name2||"Mi amor";
-  let body = "";
-  if (bal.debtor) {
-    const dName = bal.debtor==="p1"?n1:n2;
-    const cName = bal.creditor==="p1"?n1:n2;
-    body = `<strong style="color:var(--accent)">${dName}</strong> le paga <strong style="color:var(--accent2)">$${fmt(bal.debtAmount)}</strong> a <strong style="color:var(--accent)">${cName}</strong>.<br><span style="font-size:12px">Esto reiniciará todos los saldos del mes.</span>`;
+window.openSettle=function(){
+  const bal=calcBalance(), c=state.config;
+  const n1=c.name1||"Yo", n2=c.name2||"Mi amor";
+  let body="";
+  if(bal.debtor){
+    const dName=bal.debtor==="p1"?n1:n2, cName=bal.creditor==="p1"?n1:n2;
+    body=`<strong style="color:var(--accent)">${dName}</strong> le paga <strong style="color:var(--accent2)">$${fmt(bal.debtAmount)}</strong> a <strong style="color:var(--accent)">${cName}</strong>.<br><span style="font-size:12px">Los gastos pendientes quedan marcados como saldados pero no se borran.</span>`;
   } else {
-    body = "¡Están al día! No hay deuda pendiente.";
+    body="¡Están al día! No hay deuda pendiente.";
   }
-  document.getElementById("settle-body").innerHTML = body;
-  document.getElementById("modal-settle").style.display = "flex";
+  document.getElementById("settle-body").innerHTML=body;
+  document.getElementById("modal-settle").style.display="flex";
 };
-window.closeSettle = function() { document.getElementById("modal-settle").style.display="none"; };
-window.closeSettleOutside = function(e) { if(e.target.classList.contains("modal-backdrop")) closeSettle(); };
-window.confirmSettle = async function() {
-  const bal = calcBalance();
-  const c = state.config;
-  const n1 = c.name1||"Yo", n2 = c.name2||"Mi amor";
-  const expenses = Object.entries(state.expenses).map(([id,e])=>({id,...e}));
+window.closeSettle=function(){ document.getElementById("modal-settle").style.display="none"; };
+window.closeSettleOutside=function(e){ if(e.target.classList.contains("modal-backdrop")) closeSettle(); };
+window.confirmSettle=async function(){
+  const bal=calcBalance(), c=state.config;
+  const n1=c.name1||"Yo", n2=c.name2||"Mi amor";
+  const allExp=Object.entries(state.expenses).map(([id,e])=>({id,...e}));
+  const pendingExp=allExp.filter(e=>!e.settled);
 
-  await dbPush("history", {
-    date: today(),
-    ts: Date.now(),
-    debtorName: bal.debtor ? (bal.debtor==="p1"?n1:n2) : null,
-    amount: bal.debtAmount,
-    expenseCount: expenses.length,
-    total: bal.total,
+  // Mark all pending expenses as settled (don't delete them)
+  const updates={};
+  pendingExp.forEach(exp=>{ updates["expenses/"+exp.id+"/settled"]=true; });
+  if(Object.keys(updates).length>0) await window._update(window._ref(window._db), updates);
+
+  // Record in history
+  await dbPush("history",{
+    date:today(), ts:Date.now(),
+    debtorName:bal.debtor?(bal.debtor==="p1"?n1:n2):null,
+    amount:bal.debtAmount,
+    expenseCount:pendingExp.length,
+    total:bal.total,
   });
-  await dbSet("expenses", null);
+
   closeSettle();
   showToast("¡Deuda saldada! Saldos reiniciados 🎉");
-  switchTab('dashboard', document.querySelector('.tab'));
+  switchTab('dashboard');
 };
 
 // ─── Tabs ─────────────────────────────────────────────────────
-window.switchTab = function(tab, el) {
-  currentTab = tab;
-  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-  document.querySelectorAll('[id^="tab-"]').forEach(t => t.style.display="none");
-  document.querySelectorAll('.tab').forEach(t => {
-    if(t.textContent.toLowerCase().includes(tab==="dashboard"?"resumen":tab==="add"?"agregar":tab==="list"?"gastos":"historial")) t.classList.add("active");
+window.switchTab=function(tab){
+  currentTab=tab;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll('[id^="tab-"]').forEach(t=>t.style.display="none");
+  const labels={dashboard:"resumen",add:"agregar",list:"gastos",history:"historial"};
+  document.querySelectorAll('.tab').forEach(t=>{
+    if(t.textContent.toLowerCase().includes(labels[tab])) t.classList.add("active");
   });
   document.getElementById("tab-"+tab).style.display="block";
-  if (tab==="add") renderAdd();
+  if(tab==="add") renderAdd();
 };
 
 // ─── Boot ─────────────────────────────────────────────────────
-if (window._firebaseReady) {
-  initApp();
-} else {
-  window.addEventListener('firebase-ready', initApp, { once: true });
-  setTimeout(() => {
-    if (!window._firebaseReady) {
-      document.getElementById("loading").innerHTML = `
-        <div style="font-family:'DM Serif Display',serif;font-size:24px;color:#e63946;margin-bottom:12px">Error de conexión</div>
-        <div style="font-size:13px;color:#8888aa;text-align:center;padding:0 24px">Revisá que las credenciales de Firebase estén correctamente configuradas en index.html</div>`;
-    }
-  }, 8000);
-}
+if(window._firebaseReady){ initApp(); }
+else { window.addEventListener('firebase-ready',initApp,{once:true}); }
+setTimeout(()=>{
+  if(!window._firebaseReady){
+    document.getElementById("loading").innerHTML=`<div style="font-family:'DM Serif Display',serif;font-size:24px;color:#e63946;margin-bottom:12px">Error de conexión</div><div style="font-size:13px;color:#8888aa;text-align:center;padding:0 24px">Revisá las credenciales de Firebase en index.html</div>`;
+  }
+},8000);
 </script>
 </body>
 </html>
