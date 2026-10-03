@@ -456,7 +456,7 @@ function renderSpaceOptions(){
   const select=document.getElementById('space-select');select.replaceChildren();
   const add=(value,label)=>{const option=document.createElement('option');option.value=value;option.textContent=label;select.appendChild(option);};
   add('personal','Solo yo · Mis gastos');
-  if(ownSpace)add(currentUser.uid,'Grupo · '+(ownSpace.data?.config?.groupName||'Mi grupo'));
+  if(ownSpace)add(currentUser.uid,'Grupo · '+(ownSpace.data?.config?.name2||'Mi grupo'));
   Object.keys(sharedSpaces).filter(uid=>uid!==currentUser.uid).forEach((uid,i)=>add(uid,'Grupo · Espacio compartido'+(i?' '+(i+1):'')));
   select.value=activeSpace;
 }
@@ -514,7 +514,7 @@ window.createSharedSpace=()=>spaceAction('btn-create-space',async()=>{
     const uid=currentUser.uid,epoch=sessionEpoch,path='spaces/'+uid;
     const existing=await window._get(rawRef(path));
     if(epoch!==sessionEpoch)throw Object.assign(new Error('La sesión cambió.'),{code:'session-changed'});
-    if(!existing.exists())await window._set(rawRef(path+'/data/config'),{...DEFAULT_CONFIG,name1:currentUser.displayName||'Yo',groupName});
+    if(!existing.exists())await window._set(rawRef(path+'/data/config'),{...DEFAULT_CONFIG,name1:currentUser.displayName||'Yo',name2:groupName});
   });
   changeSpace(currentUser.uid);showToast('Grupo creado ✓');
 });

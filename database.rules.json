@@ -15,9 +15,6 @@
             "name2": {
               ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
             },
-            "groupName": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 60"
-            },
             "income1": {
               ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000000000"
             },
@@ -109,9 +106,6 @@
             },
             "name2": {
               ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
-            },
-            "groupName": {
-              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 60"
             },
             "income1": {
               ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000000000"
