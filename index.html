@@ -124,6 +124,8 @@
     .space-help { font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:16px; }
     .invite-code { width:100%; margin:10px 0; font-family:monospace !important; font-size:12px !important; }
     .group-name { font-weight:600; color:var(--accent); }
+    .brand-mark { width:48px; height:48px; border:2px solid var(--accent); border-radius:16px; display:inline-flex; align-items:center; justify-content:center; color:var(--accent); font:600 22px var(--sans); margin-bottom:14px; }
+    .invite-link { font-size:11px !important; color:var(--accent) !important; }
     .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
     #toast { max-width:calc(100vw - 24px); white-space:normal; text-align:center; }
 
@@ -132,14 +134,14 @@
 <body>
 
 <div id="loading">
-  <div style="font-family:'DM Serif Display',serif;font-size:28px;color:#e63946;">Gastos 💑</div>
+  <div class="brand-mark" aria-label="Gastos">$</div>
   <div class="spinner"></div>
   <div style="font-size:13px;color:#8888aa;">Conectando...</div>
 </div>
 
 <section id="login-screen" class="auth-screen" style="display:none">
   <div class="card auth-card">
-    <div style="font-size:40px;margin-bottom:16px" aria-hidden="true">💑</div>
+    <div class="brand-mark" aria-hidden="true">$</div>
     <h1>Tus gastos,<br>siempre con vos.</h1>
     <p>Guardá tus gastos con tu cuenta de Google. Llevá tus cuentas personales o compartí un espacio con tu pareja.</p>
     <button id="btn-google" class="google-btn" onclick="login()">
@@ -160,13 +162,14 @@
 <div id="modal-spaces" class="modal-backdrop" style="display:none" onclick="if(event.target===this)closeSpaces()">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="spaces-title">
     <h2 class="modal-title" id="spaces-title">Crear grupo</h2>
-    <p class="space-help">Tu espacio personal siempre queda separado. Creá un grupo, ponéle un nombre e invitá a otra persona con un código.</p>
+    <p class="space-help">Tu espacio personal siempre queda separado. Creá un grupo, ponéle un nombre e invitá a otra persona con un enlace.</p>
     <div id="group-name-form" class="form-row"><label for="new-group-name">Nombre del grupo</label><input id="new-group-name" type="text" maxlength="60" placeholder="Ej: Casa, Viaje, Familia" /></div>
     <button id="btn-create-space" class="btn-primary" onclick="createSharedSpace()">Crear grupo</button>
     <div id="owner-space-actions" hidden>
       <p id="partner-status" class="space-help"></p>
+      <div class="form-row"><label for="group-name-edit">Nombre del grupo</label><input id="group-name-edit" type="text" maxlength="60" /><button class="text-btn" onclick="renameGroup()">Guardar nombre</button></div>
       <button id="btn-invite" class="btn-primary" onclick="createInvite()">Generar invitación</button>
-      <div id="invite-result" hidden><label for="invite-code">Código de invitación</label><input id="invite-code" class="invite-code" type="text" readonly onclick="this.select()" /><p class="space-help">Vence en 7 días. Compartilo solo con tu pareja: permite que una cuenta se una al espacio.</p><button class="text-btn" onclick="copyInvite()">Copiar código</button><button class="text-btn" onclick="revokeInvite()">Anular invitación</button></div>
+      <div id="invite-result" hidden><label for="invite-link">Enlace de invitación</label><input id="invite-link" class="invite-code invite-link" type="text" readonly onclick="this.select()" /><input id="invite-code" type="hidden" /><p class="space-help">Vence en 7 días y permite que una sola cuenta se una al grupo.</p><button class="text-btn" onclick="copyInvite()">Copiar enlace</button><button class="text-btn" onclick="revokeInvite()">Anular invitación</button></div>
     </div>
     <hr style="border:0;border-top:1px solid var(--border);margin:20px 0" />
     <label for="join-code">Tengo una invitación</label>
@@ -360,6 +363,7 @@ function showToast(msg, type="ok") {
 }
 
 let currentUser=null, activeSpace='personal', sessionEpoch=0, spaceUnsubscribe=null;
+let pendingInvite=new URLSearchParams(location.search).get('invite')||'';
 let accountUnsubscribes=[], sharedSpaces={}, ownSpace=null, connected=false, dataReady=false;
 let pendingWrites=0, spaceTimer=null, authStarted=false;
 const DEFAULT_CONFIG={name1:'Yo',name2:'Mi amor',income1:0,income2:0};
@@ -414,6 +418,7 @@ function clearPrivateUI(){
   document.getElementById('header-names').textContent='';
   document.getElementById('account-email').textContent='';
   document.getElementById('partner-status').textContent='';
+  document.getElementById('group-name-edit').value='';
   document.getElementById('settle-body').textContent='';
   document.getElementById('toast').className='';
 }
@@ -490,7 +495,7 @@ window.syncNow=async function(){
   try {requireOnline();const epoch=sessionEpoch;await window._get(dbRef());if(epoch===sessionEpoch)showToast('Gastos actualizados ✓');}
   catch(e){reportError(e);}
 };
-window.openSpaces=function(){document.getElementById('space-error').textContent='';renderSharing();document.getElementById('modal-spaces').style.display='flex';};
+window.openSpaces=function(){document.getElementById('space-error').textContent='';renderSharing();if(pendingInvite){document.getElementById('join-code').value=pendingInvite;pendingInvite='';}document.getElementById('modal-spaces').style.display='flex';};
 window.closeSpaces=function(){document.getElementById('modal-spaces').style.display='none';};
 function renderSharing(){
   document.getElementById('group-name-form').style.display=ownSpace?'none':'block';
@@ -500,7 +505,10 @@ function renderSharing(){
   document.getElementById('partner-status').textContent=partner?'Tu espacio ya está compartido con una segunda cuenta.':'Tu espacio está listo. Invitá a tu pareja.';
   document.getElementById('btn-invite').hidden=partner;
   document.getElementById('invite-result').hidden=partner||!ownSpace?.inviteCode;
+  const groupName=ownSpace?.data?.config?.name2||'Mi grupo';
+  document.getElementById('group-name-edit').value=groupName;
   document.getElementById('invite-code').value=ownSpace?.inviteCode||'';
+  document.getElementById('invite-link').value=ownSpace?.inviteCode?location.origin+location.pathname+'?invite='+ownSpace.inviteCode:'';
 }
 async function spaceAction(buttonId,action){
   const button=document.getElementById(buttonId);if(button.disabled)return;
@@ -517,6 +525,11 @@ window.createSharedSpace=()=>spaceAction('btn-create-space',async()=>{
     if(!existing.exists())await window._set(rawRef(path+'/data/config'),{...DEFAULT_CONFIG,name1:currentUser.displayName||'Yo',name2:groupName});
   });
   changeSpace(currentUser.uid);showToast('Grupo creado ✓');
+});
+window.renameGroup=()=>spaceAction('btn-create-space',async()=>{
+  const name=document.getElementById('group-name-edit').value.trim();
+  if(!name) throw new Error('Poné un nombre para el grupo.');
+  await dbUpdate('config/name2',name); showToast('Nombre del grupo actualizado ✓');
 });
 window.createInvite=()=>spaceAction('btn-invite',async()=>{
   await trackedWrite(async()=>{
@@ -537,11 +550,12 @@ window.revokeInvite=async function(){
   });renderSharing();}catch(e){reportError(e);}
 };
 window.copyInvite=async function(){
-  try{await navigator.clipboard.writeText(document.getElementById('invite-code').value);showToast('Código copiado ✓');}
-  catch{document.getElementById('invite-code').select();showToast('Seleccioná y copiá el código.');}
+  try{await navigator.clipboard.writeText(document.getElementById('invite-link').value);showToast('Enlace copiado ✓');}
+  catch{document.getElementById('invite-link').select();showToast('Seleccioná y copiá el enlace.');}
 };
 window.joinSharedSpace=()=>spaceAction('btn-join',async()=>{
-  const code=document.getElementById('join-code').value.trim().toLowerCase();
+  const raw=document.getElementById('join-code').value.trim();
+  const code=(raw.includes('invite=')?new URL(raw).searchParams.get('invite'):raw).toLowerCase();
   if(!/^[a-f0-9]{32}$/.test(code))throw new Error('Revisá el código de invitación.');
   let ownerUid;
   await trackedWrite(async()=>{

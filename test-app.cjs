@@ -3,7 +3,7 @@ const html=fs.readFileSync(__dirname+'/index.html','utf8');
 const source=[...html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)].find(m=>!m[1].includes('module'))[2];
 const elements=new Map(),subscriptions=[],writes=[];
 function element(id){if(!elements.has(id))elements.set(id,{style:{},value:'',textContent:'',innerHTML:'',className:'',disabled:false,hidden:false,children:[],classList:{add(){},remove(){},contains(){return false;}},addEventListener(){},replaceChildren(){this.children=[];},appendChild(child){this.children.push(child);},select(){}});return elements.get(id);}
-const ctx={console,Date,Number,String,Object,Array,Math,Promise,Error,RegExp,JSON,crypto:require('node:crypto').webcrypto,Event:class{},location:{protocol:'https:'},navigator:{clipboard:{writeText:async()=>{}}},setTimeout:()=>1,clearTimeout(){},confirm:()=>true,
+const ctx={console,Date,Number,String,Object,Array,Math,Promise,Error,RegExp,JSON,URLSearchParams,URL,crypto:require('node:crypto').webcrypto,Event:class{},location:{protocol:'https:',search:''},navigator:{clipboard:{writeText:async()=>{}}},setTimeout:()=>1,clearTimeout(){},confirm:()=>true,
   document:{getElementById:element,createElement:()=>({}),querySelectorAll:()=>[]},addEventListener(){},dispatchEvent(){},_firebaseReady:true,
   _db:{},_auth:{currentUser:null},_ref:(_,path='')=>path,
   _onValue(path,callback,error){const s={path,callback,error,active:true};subscriptions.push(s);return()=>{s.active=false;};},
