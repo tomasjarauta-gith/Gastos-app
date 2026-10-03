@@ -550,7 +550,7 @@ window.createInvite=()=>spaceAction('btn-invite',async()=>{
     if(ownSpace?.inviteCode)changes['invitations/'+ownSpace.inviteCode]=null;
     changes['invitations/'+code]={ownerUid:uid,expiresAt:Date.now()+7*24*60*60*1000};
     changes['spaces/'+uid+'/inviteCode']=code;
-    await window._update(rawRef(''),changes);
+    await window._update(window._ref(window._db),changes);
   });
   renderSharing();
 });
@@ -558,7 +558,7 @@ window.revokeInvite=async function(){
   try{await trackedWrite(()=>{
     const changes={};if(!ownSpace?.inviteCode)return Promise.resolve();
     changes['invitations/'+ownSpace.inviteCode]=null;changes['spaces/'+currentUser.uid+'/inviteCode']=null;
-    return window._update(rawRef(''),changes);
+    return window._update(window._ref(window._db),changes);
   });renderSharing();}catch(e){reportError(e);}
 };
 window.copyInvite=async function(){
@@ -1002,7 +1002,7 @@ window.confirmSettle=async function(){
   const payers=[...new Set(pendingExp.map(e=>e.paidBy).filter(Boolean))];
   updates['history/'+historyId]={date:today(),ts:Date.now(),debtorName:bal.debtor?(bal.debtor==="p1"?c.name1:c.name2):null,amount:bal.debtAmount,expenseCount:pendingExp.length,total:bal.total,paidBy:payers.length===1?payers[0]:'both'};
   try {
-    await dbUpdate('',updates);
+    await window._update(window._ref(window._db),updates);
     closeSettle(); showToast("¡Deuda saldada! 🎉"); switchTab('dashboard');
   } catch(e) { reportError(e); }
 };
