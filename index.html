@@ -964,9 +964,12 @@ window.openSettle=function(){
   const bal=calcBalance(), c=state.config;
   const n1=escapeHtml(c.name1||"Yo"), n2=escapeHtml(c.name2||"Mi amor");
   let body="";
+  const pending=Object.values(state.expenses).filter(e=>!e.settled);
+  const months=[...new Set(pending.map(e=>String(e.date||'').slice(0,7)).filter(Boolean))].sort();
+  const current=today().slice(0,7), selected=months.includes(current)?current:(months[0]||current);
   if(bal.debtor){
     const dName=bal.debtor==="p1"?n1:n2, cName=bal.creditor==="p1"?n1:n2;
-    body=`<strong style="color:var(--accent)">${dName}</strong> le paga <strong style="color:var(--accent2)">$${fmt(bal.debtAmount)}</strong> a <strong style="color:var(--accent)">${cName}</strong>.<br><span style="font-size:12px">Los gastos pendientes quedan marcados como saldados pero no se borran.</span>`;
+    body=`<strong style="color:var(--accent)">${dName}</strong> le paga <strong style="color:var(--accent2)">$${fmt(bal.debtAmount)}</strong> a <strong style="color:var(--accent)">${cName}</strong>.<br><label style="display:block;text-align:left;margin-top:14px">Mes a saldar<select id="settle-month" style="margin-top:6px">${months.map(m=>`<option value="${m}" ${m===selected?'selected':''}>${m}</option>`).join('')}</select></label><span style="font-size:12px">Solo se marcarán como saldados los gastos del mes elegido.</span>`;
   } else {
     body="¡Están al día! No hay deuda pendiente.";
   }
@@ -979,9 +982,10 @@ window.confirmSettle=async function(){
   const bal=calcBalance(), c=state.config;
   const n1=escapeHtml(c.name1||"Yo"), n2=escapeHtml(c.name2||"Mi amor");
   const allExp=Object.entries(state.expenses).map(([id,e])=>({id,...e}));
-  const pendingExp=allExp.filter(e=>!e.settled);
+  const chosenMonth=document.getElementById("settle-month")?.value||today().slice(0,7);
+  const pendingExp=allExp.filter(e=>!e.settled&&String(e.date||'').startsWith(chosenMonth));
 
-  if(!pendingExp.length) return;
+  if(!pendingExp.length){showToast("No hay gastos pendientes en ese mes","err");return;}
   const updates={};
   pendingExp.forEach(exp=>{ updates["expenses/"+exp.id+"/settled"]=true; });
   const historyId=window._push(dbRef("history")).key;
