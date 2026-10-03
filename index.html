@@ -7,8 +7,7 @@
   <meta name="description" content="App para dividir gastos en pareja" />
   <meta name="theme-color" content="#0f0e17" />
   <link rel="manifest" href="/manifest.json" />
-  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png?v=4" />
-  <link rel="apple-touch-icon" href="/icon-192.png?v=4" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png?v=4" />`n  <link rel="apple-touch-icon" href="/icon-192.png?v=4" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Gastos" />
@@ -679,9 +678,9 @@ function renderAdd() {
       <div><label>Fecha primera cuota</label><input type="date" id="f-date" value="${today()}" /></div>
     </div>
     <div class="card" style="margin:10px 0;padding:12px;background:var(--surface2)">
-      <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="f-installments" onchange="toggleInstallments()" /> Comprar en cuotas</label>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="f-installments" onchange="toggleInstallments()" /> Pago en cuotas</label>
       <div id="installments-fields" style="display:none;margin-top:10px" class="form-grid">
-        <div><label>Monto por cuota $</label><input type="number" id="f-installment-amount" placeholder="0" min="0" step="0.01" oninput="updatePreview()" /></div>
+        <div><label>Monto por cuota $</label><input type="number" id="f-installment-amount" placeholder="0" readonly /></div>
         <div><label>Cuotas restantes</label><input type="number" id="f-installment-count" placeholder="1" min="1" step="1" value="1" /></div>
       </div>
       <div id="installments-help" style="display:none;color:var(--muted);font-size:12px;margin-top:6px">Se agregará una cuota por mes y cada una aparecerá por separado en el historial.</div>
@@ -709,8 +708,12 @@ window.toggleInstallments=function(){
   const fields=document.getElementById("installments-fields"), help=document.getElementById("installments-help");
   if(fields) fields.style.display=on?"grid":"none";
   if(help) help.style.display=on?"block":"none";
-  if(on && document.getElementById("f-installment-amount")) document.getElementById("f-installment-amount").value=document.getElementById("f-amount").value||"";
+  updateInstallmentAmount();
   updatePreview();
+};
+window.updateInstallmentAmount=function(){
+  const total=Number(document.getElementById("f-amount")?.value||0), count=Math.max(1,parseInt(document.getElementById("f-installment-count")?.value||"1",10));
+  const field=document.getElementById("f-installment-amount"); if(field) field.value=total>0?(total/count).toFixed(2):"";
 };
 window.selectPaid=function(p){
   window._formState.paidBy=p;
@@ -724,6 +727,7 @@ window.selectSplit=function(s){
   updatePreview();
 };
 window.updatePreview=function(){
+  updateInstallmentAmount();
   const amt=Number(document.getElementById("f-amount")?.value);
   const bal=calcBalance(), c=state.config;
   const box=document.getElementById("preview-box"); if(!box) return;
@@ -904,9 +908,11 @@ function renderHistory() {
     return;
   }
   const mode=window.historyGrouping||'month';
+  const payer=window.historyPayer||'all';
+  const filtered=hist.filter(h=>payer==='all'||!h.paidBy||h.paidBy===payer||h.paidBy==='both');
   const groupKey=h=>{const d=new Date((h.date||'1970-01-01')+'T12:00:00'); if(mode==='day')return d.toLocaleDateString('es-AR'); if(mode==='week'){const first=new Date(d); first.setDate(d.getDate()-((d.getDay()+6)%7)); return 'Semana del '+first.toLocaleDateString('es-AR');} return MONTHS[d.getMonth()]+' '+d.getFullYear();};
-  const groups={};hist.sort((a,b)=>(b.ts||0)-(a.ts||0)).forEach(h=>(groups[groupKey(h)]??=[]).push(h));
-  let html=`<div class="section-label">Cierres anteriores</div><div class="filter-row"><button class="filter-btn ${mode==='day'?'active':''}" onclick="setHistoryGrouping('day')">Día</button><button class="filter-btn ${mode==='week'?'active':''}" onclick="setHistoryGrouping('week')">Semana</button><button class="filter-btn ${mode==='month'?'active':''}" onclick="setHistoryGrouping('month')">Mes</button></div>`;
+  const groups={};filtered.sort((a,b)=>(b.ts||0)-(a.ts||0)).forEach(h=>(groups[groupKey(h)]??=[]).push(h));
+  const c=state.config; let html=`<div class="section-label">Cierres anteriores</div><div class="filter-row"><button class="filter-btn ${mode==='day'?'active':''}" onclick="setHistoryGrouping('day')">Día</button><button class="filter-btn ${mode==='week'?'active':''}" onclick="setHistoryGrouping('week')">Semana</button><button class="filter-btn ${mode==='month'?'active':''}" onclick="setHistoryGrouping('month')">Mes</button></div><div class="form-row" style="margin-top:10px"><label>Pagó</label><select onchange="setHistoryPayer(this.value)"><option value="all" ${payer==='all'?'selected':''}>Todos</option><option value="p1" ${payer==='p1'?'selected':''}>${escapeHtml(c.name1||'Yo')}</option><option value="p2" ${payer==='p2'?'selected':''}>${escapeHtml(c.name2||'Mi amor')}</option></select></div>`;
   Object.entries(groups).forEach(([group,items])=>{html+=`<div class="section-label" style="margin-top:18px">${group}</div>`;items.forEach(h=>{
     const dateStr=h.date?new Date(h.date+"T12:00:00").toLocaleDateString("es-AR"):"";
     html+=`<div class="history-item">
@@ -918,6 +924,7 @@ function renderHistory() {
   document.getElementById("tab-history").innerHTML=html;
 }
 window.setHistoryGrouping=function(mode){window.historyGrouping=mode;renderHistory();};
+window.setHistoryPayer=function(payer){window.historyPayer=payer;renderHistory();};
 
 // ─── Config modal ─────────────────────────────────────────────
 window.openConfig=function(){
@@ -978,7 +985,8 @@ window.confirmSettle=async function(){
   const updates={};
   pendingExp.forEach(exp=>{ updates["expenses/"+exp.id+"/settled"]=true; });
   const historyId=window._push(dbRef("history")).key;
-  updates['history/'+historyId]={date:today(),ts:Date.now(),debtorName:bal.debtor?(bal.debtor==="p1"?c.name1:c.name2):null,amount:bal.debtAmount,expenseCount:pendingExp.length,total:bal.total};
+  const payers=[...new Set(pendingExp.map(e=>e.paidBy).filter(Boolean))];
+  updates['history/'+historyId]={date:today(),ts:Date.now(),debtorName:bal.debtor?(bal.debtor==="p1"?c.name1:c.name2):null,amount:bal.debtAmount,expenseCount:pendingExp.length,total:bal.total,paidBy:payers.length===1?payers[0]:'both'};
   try {
     await dbUpdate('',updates);
     closeSettle(); showToast("¡Deuda saldada! 🎉"); switchTab('dashboard');
