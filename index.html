@@ -586,14 +586,14 @@ window.joinSharedSpace=()=>spaceAction('btn-join',async()=>{
 window.addEventListener('beforeunload',event=>{if(pendingWrites){event.preventDefault();event.returnValue='';}});
 
 // ─── Balance (only counts non-settled expenses) ───────────────
-function calcBalance() {
+function calcBalance(monthFilter=null) {
   const inc1=Number(state.config.income1)||0, inc2=Number(state.config.income2)||0;
   const totalInc=inc1+inc2;
   const ratio1=totalInc>0?inc1/totalInc:0.5, ratio2=totalInc>0?inc2/totalInc:0.5;
   let paid1=0,paid2=0,shouldPay1=0,shouldPay2=0,total=0;
   const list=Object.entries(state.expenses).map(([id,e])=>({id,...e}));
   // Only unsettled expenses count toward current balance
-  const active=list.filter(e=>!e.settled);
+  const active=list.filter(e=>!e.settled&&(!monthFilter||String(e.date||'').startsWith(monthFilter)));
   active.forEach(exp=>{
     total+=exp.amount;
     if(exp.paidBy==="p1") paid1+=exp.amount; else paid2+=exp.amount;
@@ -969,14 +969,21 @@ window.openSettle=function(){
   const current=today().slice(0,7), selected=months.includes(current)?current:(months[0]||current);
   if(bal.debtor){
     const dName=bal.debtor==="p1"?n1:n2, cName=bal.creditor==="p1"?n1:n2;
-    body=`<strong style="color:var(--accent)">${dName}</strong> le paga <strong style="color:var(--accent2)">$${fmt(bal.debtAmount)}</strong> a <strong style="color:var(--accent)">${cName}</strong>.<br><label style="display:block;text-align:left;margin-top:14px">Mes a saldar<select id="settle-month" style="margin-top:6px">${months.map(m=>`<option value="${m}" ${m===selected?'selected':''}>${m}</option>`).join('')}</select></label><span style="font-size:12px">Solo se marcarán como saldados los gastos del mes elegido.</span>`;
+    body=`<strong style="color:var(--accent)" id="settle-debtor">${dName}</strong> le paga <strong style="color:var(--accent2)" id="settle-amount">$${fmt(bal.debtAmount)}</strong> a <strong style="color:var(--accent)" id="settle-creditor">${cName}</strong>.<br><label style="display:block;text-align:left;margin-top:14px">Mes a saldar<select id="settle-month" style="margin-top:6px" onchange="updateSettlePreview()">${months.map(m=>`<option value="${m}" ${m===selected?'selected':''}>${m}</option>`).join('')}</select></label><span style="font-size:12px">Solo se marcarán como saldados los gastos del mes elegido.</span>`;
   } else {
     body="¡Están al día! No hay deuda pendiente.";
   }
   document.getElementById("settle-body").innerHTML=body;
+  if(months.length) updateSettlePreview();
   document.getElementById("modal-settle").style.display="flex";
 };
 window.closeSettle=function(){ document.getElementById("modal-settle").style.display="none"; };
+window.updateSettlePreview=function(){
+  const b=calcBalance(document.getElementById("settle-month")?.value); const c=state.config;
+  const debtor=b.debtor?(b.debtor==='p1'?c.name1:c.name2):'Nadie'; const creditor=b.creditor==='p1'?c.name1:c.name2;
+  const d=document.getElementById('settle-debtor'), a=document.getElementById('settle-amount'), cr=document.getElementById('settle-creditor');
+  if(d)d.textContent=debtor; if(a)a.textContent='$'+fmt(b.debtAmount); if(cr)cr.textContent=creditor;
+};
 window.closeSettleOutside=function(e){ if(e.target.classList.contains("modal-backdrop")) closeSettle(); };
 window.confirmSettle=async function(){
   const bal=calcBalance(), c=state.config;
