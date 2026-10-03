@@ -755,7 +755,7 @@ window.addExpense=async function(){
     const seriesId=installments?`installment-${Date.now()}-${Math.random().toString(36).slice(2,8)}`:null;
     for(let i=0;i<(installments?installmentCount:1);i++){
       const d=new Date(`${date}T12:00:00`); d.setMonth(d.getMonth()+i);
-      await dbPush("expenses",{name:installments?`${name} · Cuota ${i+1}/${installmentCount}`:name,amount:installments?installmentAmount:amount,date:d.toISOString().slice(0,10),paidBy,splitType,settled:false,ts:Date.now()+i,...(seriesId?{installmentSeriesId:seriesId,installmentNumber:i+1,installmentTotal:installmentCount}:{})});
+      await dbPush("expenses",{name:installments?`${name} · Cuota ${i+1}/${installmentCount}`:name,amount:installments?installmentAmount:amount,date:d.toISOString().slice(0,10),paidBy,splitType,settled:false,ts:Date.now()+i});
     }
     showToast(installments?`${installmentCount} cuotas agregadas ✓`:"Gasto agregado ✓");
     renderAdd();
