@@ -625,7 +625,8 @@ function renderDashboard() {
     document.getElementById('tab-dashboard').innerHTML=      '<div class="section-label">Tu espacio personal</div><div class="card card-hero"><div class="balance-label">Gastos de este mes</div><div class="balance-amount">$'+fmt(monthly.reduce((s,e)=>s+Number(e.amount),0))+'</div><div class="balance-sub">'+monthly.length+' gastos</div></div><div class="card"><div class="balance-label">Total registrado</div><div class="person-paid">$'+fmt(expenses.reduce((s,e)=>s+Number(e.amount),0))+'</div><div class="balance-sub">'+expenses.length+' gastos · Solo vos tenés acceso</div></div>';
     return;
   }
-  const bal=calcBalance(), c=state.config;
+  const month=today().slice(0,7);
+  const bal=calcBalance(month), c=state.config;
   const n1=escapeHtml(c.name1||"Yo"), n2=escapeHtml(c.name2||"Mi amor");
   const inc1=Number(c.income1)||0, inc2=Number(c.income2)||0;
   const now=new Date();
