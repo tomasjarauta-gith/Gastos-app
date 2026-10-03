@@ -15,15 +15,15 @@
 
   <style>
     :root {
-      --bg: #0f0e17;
-      --surface: #1a1a2e;
-      --surface2: #16213e;
-      --border: #252540;
-      --text: #fffffe;
-      --muted: #8888aa;
-      --accent: #e63946;
-      --accent2: #2cb67d;
-      --accent3: #f7b731;
+      --bg: #f7f9fc;
+      --surface: #ffffff;
+      --surface2: #eef3f8;
+      --border: #dbe4ee;
+      --text: #203047;
+      --muted: #718096;
+      --accent: #3b82c4;
+      --accent2: #35a77a;
+      --accent3: #e9a83b;
       --serif: 'DM Serif Display', Georgia, serif;
       --sans: 'DM Sans', system-ui, sans-serif;
       --radius: 14px;
@@ -46,7 +46,7 @@
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
     .card-hero { background: linear-gradient(135deg, var(--surface2), #0f3460); }
     label { display: block; font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
-    input[type=text], input[type=number], input[type=date] { width: 100%; padding: 10px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 9px; color: var(--text); font-family: var(--sans); font-size: 15px; transition: border-color 0.15s; color-scheme: dark; }
+    input[type=text], input[type=number], input[type=date] { width: 100%; padding: 10px 12px; background: #fff; border: 1px solid var(--border); border-radius: 9px; color: var(--text); font-family: var(--sans); font-size: 15px; transition: border-color 0.15s; color-scheme: light; }
     input:focus { outline: none; border-color: var(--accent); }
     .form-row { margin-bottom: 14px; }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
@@ -110,7 +110,7 @@
     .dot-red { background: var(--accent); }
     .dot-green { background: var(--accent2); }
     .auth-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
-    .auth-card { width:100%; max-width:400px; text-align:center; padding:32px 24px; }
+    .auth-card { width:100%; max-width:400px; text-align:center; padding:32px 24px; box-shadow:0 18px 50px rgba(50,80,110,.12); }
     .auth-card h1 { font-family:var(--serif); font-size:34px; color:var(--accent); margin-bottom:12px; }
     .auth-card p { color:var(--muted); line-height:1.7; font-size:14px; margin:14px 0 24px; }
     .google-btn { display:flex; align-items:center; justify-content:center; gap:12px; width:100%; padding:13px 18px; border:1px solid #747775; border-radius:10px; background:white; color:#1f1f1f; cursor:pointer; font:600 14px var(--sans); }
@@ -123,6 +123,7 @@
     .auth-error { color:#ff9ba5 !important; font-size:13px; line-height:1.5; white-space:normal; }
     .space-help { font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:16px; }
     .invite-code { width:100%; margin:10px 0; font-family:monospace !important; font-size:12px !important; }
+    .group-name { font-weight:600; color:var(--accent); }
     .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
     #toast { max-width:calc(100vw - 24px); white-space:normal; text-align:center; }
 
@@ -158,12 +159,13 @@
 </section>
 <div id="modal-spaces" class="modal-backdrop" style="display:none" onclick="if(event.target===this)closeSpaces()">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="spaces-title">
-    <h2 class="modal-title" id="spaces-title">Gastos en pareja</h2>
-    <p class="space-help">Tu espacio personal siempre queda separado. Creá un espacio de pareja y pasale el código a la otra persona, o ingresá el código que te compartió.</p>
-    <button id="btn-create-space" class="btn-primary" onclick="createSharedSpace()">Crear mi espacio de pareja</button>
+    <h2 class="modal-title" id="spaces-title">Crear grupo</h2>
+    <p class="space-help">Tu espacio personal siempre queda separado. Creá un grupo, ponéle un nombre e invitá a otra persona con un código.</p>
+    <div id="group-name-form" class="form-row"><label for="new-group-name">Nombre del grupo</label><input id="new-group-name" type="text" maxlength="60" placeholder="Ej: Casa, Viaje, Familia" /></div>
+    <button id="btn-create-space" class="btn-primary" onclick="createSharedSpace()">Crear grupo</button>
     <div id="owner-space-actions" hidden>
       <p id="partner-status" class="space-help"></p>
-      <button id="btn-invite" class="btn-primary" onclick="createInvite()">Generar código de invitación</button>
+      <button id="btn-invite" class="btn-primary" onclick="createInvite()">Generar invitación</button>
       <div id="invite-result" hidden><label for="invite-code">Código de invitación</label><input id="invite-code" class="invite-code" type="text" readonly onclick="this.select()" /><p class="space-help">Vence en 7 días. Compartilo solo con tu pareja: permite que una cuenta se una al espacio.</p><button class="text-btn" onclick="copyInvite()">Copiar código</button><button class="text-btn" onclick="revokeInvite()">Anular invitación</button></div>
     </div>
     <hr style="border:0;border-top:1px solid var(--border);margin:20px 0" />
@@ -454,8 +456,8 @@ function renderSpaceOptions(){
   const select=document.getElementById('space-select');select.replaceChildren();
   const add=(value,label)=>{const option=document.createElement('option');option.value=value;option.textContent=label;select.appendChild(option);};
   add('personal','Solo yo · Mis gastos');
-  if(ownSpace)add(currentUser.uid,'En pareja · Mi espacio');
-  Object.keys(sharedSpaces).filter(uid=>uid!==currentUser.uid).forEach((uid,i)=>add(uid,'En pareja · Espacio compartido'+(i?' '+(i+1):'')));
+  if(ownSpace)add(currentUser.uid,'Grupo · '+(ownSpace.data?.config?.groupName||'Mi grupo'));
+  Object.keys(sharedSpaces).filter(uid=>uid!==currentUser.uid).forEach((uid,i)=>add(uid,'Grupo · Espacio compartido'+(i?' '+(i+1):'')));
   select.value=activeSpace;
 }
 function showDataError(error,epoch){
@@ -491,6 +493,7 @@ window.syncNow=async function(){
 window.openSpaces=function(){document.getElementById('space-error').textContent='';renderSharing();document.getElementById('modal-spaces').style.display='flex';};
 window.closeSpaces=function(){document.getElementById('modal-spaces').style.display='none';};
 function renderSharing(){
+  document.getElementById('group-name-form').style.display=ownSpace?'none':'block';
   document.getElementById('btn-create-space').hidden=!!ownSpace;
   document.getElementById('owner-space-actions').hidden=!ownSpace;
   const partner=!!ownSpace?.partner;
@@ -505,13 +508,15 @@ async function spaceAction(buttonId,action){
   try{await action();}catch(e){if(e.code!=='session-changed')document.getElementById('space-error').textContent=errorMessage(e);}finally{button.disabled=false;}
 }
 window.createSharedSpace=()=>spaceAction('btn-create-space',async()=>{
+  const groupName=document.getElementById('new-group-name').value.trim();
+  if(!groupName) throw new Error('Poné un nombre para el grupo.');
   await trackedWrite(async()=>{
     const uid=currentUser.uid,epoch=sessionEpoch,path='spaces/'+uid;
     const existing=await window._get(rawRef(path));
     if(epoch!==sessionEpoch)throw Object.assign(new Error('La sesión cambió.'),{code:'session-changed'});
-    if(!existing.exists())await window._set(rawRef(path+'/data/config'),{...DEFAULT_CONFIG,name1:currentUser.displayName||'Yo'});
+    if(!existing.exists())await window._set(rawRef(path+'/data/config'),{...DEFAULT_CONFIG,name1:currentUser.displayName||'Yo',groupName});
   });
-  changeSpace(currentUser.uid);showToast('Espacio de pareja creado ✓');
+  changeSpace(currentUser.uid);showToast('Grupo creado ✓');
 });
 window.createInvite=()=>spaceAction('btn-invite',async()=>{
   await trackedWrite(async()=>{
@@ -850,18 +855,21 @@ function renderHistory() {
     document.getElementById("tab-history").innerHTML=`<div class="empty"><div class="empty-icon">📜</div>Sin historial aún</div>`;
     return;
   }
-  const sorted=hist.sort((a,b)=>(b.ts||0)-(a.ts||0));
-  let html=`<div class="section-label">Cierres anteriores</div>`;
-  sorted.forEach(h=>{
+  const mode=window.historyGrouping||'month';
+  const groupKey=h=>{const d=new Date((h.date||'1970-01-01')+'T12:00:00'); if(mode==='day')return d.toLocaleDateString('es-AR'); if(mode==='week'){const first=new Date(d); first.setDate(d.getDate()-((d.getDay()+6)%7)); return 'Semana del '+first.toLocaleDateString('es-AR');} return MONTHS[d.getMonth()]+' '+d.getFullYear();};
+  const groups={};hist.sort((a,b)=>(b.ts||0)-(a.ts||0)).forEach(h=>(groups[groupKey(h)]??=[]).push(h));
+  let html=`<div class="section-label">Cierres anteriores</div><div class="filter-row"><button class="filter-btn ${mode==='day'?'active':''}" onclick="setHistoryGrouping('day')">Día</button><button class="filter-btn ${mode==='week'?'active':''}" onclick="setHistoryGrouping('week')">Semana</button><button class="filter-btn ${mode==='month'?'active':''}" onclick="setHistoryGrouping('month')">Mes</button></div>`;
+  Object.entries(groups).forEach(([group,items])=>{html+=`<div class="section-label" style="margin-top:18px">${group}</div>`;items.forEach(h=>{
     const dateStr=h.date?new Date(h.date+"T12:00:00").toLocaleDateString("es-AR"):"";
     html+=`<div class="history-item">
       <div class="history-date">Saldado el ${dateStr}</div>
       <div class="history-main">${h.debtorName?`${escapeHtml(h.debtorName)} pagó $${fmt(h.amount)}`:"Sin deuda pendiente"}</div>
       <div class="history-sub">${h.expenseCount||0} gastos marcados · Total: $${fmt(h.total||0)}</div>
     </div>`;
-  });
+  });});
   document.getElementById("tab-history").innerHTML=html;
 }
+window.setHistoryGrouping=function(mode){window.historyGrouping=mode;renderHistory();};
 
 // ─── Config modal ─────────────────────────────────────────────
 window.openConfig=function(){
