@@ -177,7 +177,7 @@
     <button id="btn-create-space" class="btn-primary" onclick="createSharedSpace()">Crear grupo</button>
     <div id="owner-space-actions" hidden>
       <p id="partner-status" class="space-help"></p>
-      <div class="form-row"><label for="group-name-edit">Nombre del grupo</label><input id="group-name-edit" type="text" maxlength="60" /><button class="text-btn" onclick="renameGroup()">Guardar nombre</button></div>
+      <div class="form-row"><label for="group-name-edit">Nombre del grupo</label><input id="group-name-edit" type="text" maxlength="60" /><button id="btn-rename-group" class="text-btn" onclick="renameGroup()">Guardar nombre</button></div>
       <button id="btn-invite" class="btn-primary" onclick="createInvite()">Generar invitación</button>
       <div id="invite-result" hidden><label for="invite-link">Enlace de invitación</label><input id="invite-link" class="invite-code invite-link" type="text" readonly onclick="this.select()" /><input id="invite-code" type="hidden" /><p class="space-help">Vence en 7 días y permite que una sola cuenta se una al grupo.</p><button class="text-btn" onclick="copyInvite()">Copiar enlace</button><button class="text-btn" onclick="revokeInvite()">Anular invitación</button></div>
     </div>
@@ -536,7 +536,7 @@ window.createSharedSpace=()=>spaceAction('btn-create-space',async()=>{
   });
   changeSpace(currentUser.uid);showToast('Grupo creado ✓');
 });
-window.renameGroup=()=>spaceAction('btn-create-space',async()=>{
+window.renameGroup=()=>spaceAction('btn-rename-group',async()=>{
   const name=document.getElementById('group-name-edit').value.trim();
   if(!name) throw new Error('Poné un nombre para el grupo.');
   await dbUpdate('config/name2',name); showToast('Nombre del grupo actualizado ✓');
