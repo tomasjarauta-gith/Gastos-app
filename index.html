@@ -492,6 +492,7 @@ function loadSpace(){
     clearTimeout(spaceTimer);const data=snap.val()||{};
     state={config:{...DEFAULT_CONFIG,...data.config},expenses:data.expenses||{},history:data.history||{}};
     const first=!dataReady;dataReady=true;renderAll();if(first)switchTab('dashboard');screen('app');updateSyncLabel();
+    if(first&&pendingInvite){setTimeout(()=>openSpaces(),0);}
   },error=>showDataError(error,epoch));
 }
 window.changeSpace=function(space){
