@@ -681,7 +681,7 @@ function renderAdd() {
       <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="f-installments" onchange="toggleInstallments()" /> Pago en cuotas</label>
       <div id="installments-fields" style="display:none;margin-top:10px" class="form-grid">
         <div><label>Monto por cuota $</label><input type="number" id="f-installment-amount" placeholder="0" readonly /></div>
-        <div><label>Cuotas restantes</label><input type="number" id="f-installment-count" placeholder="1" min="1" step="1" value="1" /></div>
+        <div><label>Cuotas restantes</label><input type="number" id="f-installment-count" placeholder="1" min="1" step="1" value="1" oninput="updateInstallmentAmount();updatePreview()" /></div>
       </div>
       <div id="installments-help" style="display:none;color:var(--muted);font-size:12px;margin-top:6px">Se agregará una cuota por mes y cada una aparecerá por separado en el historial.</div>
     </div>
