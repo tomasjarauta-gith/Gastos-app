@@ -601,6 +601,8 @@ function calcBalance(monthFilter=null) {
     total+=exp.amount;
     if(exp.paidBy==="p1") paid1+=exp.amount; else paid2+=exp.amount;
     if(exp.splitType==="equal"){ shouldPay1+=exp.amount*0.5; shouldPay2+=exp.amount*0.5; }
+    else if(exp.splitType==="p1") shouldPay1+=exp.amount;
+    else if(exp.splitType==="p2") shouldPay2+=exp.amount;
     else { shouldPay1+=exp.amount*ratio1; shouldPay2+=exp.amount*ratio2; }
   });
   const diff1=paid1-shouldPay1;
@@ -698,6 +700,8 @@ function renderAdd() {
     <div class="toggle-group">
       <button class="toggle-btn active" id="split-equal" onclick="selectSplit('equal')">⚖ Partes iguales<small>50% / 50%</small></button>
       <button class="toggle-btn" id="split-prop" onclick="selectSplit('proportional')" ${hasInc?"":"disabled"}>📊 Proporcional<small>${hasInc?`${(bal.ratio1*100).toFixed(0)}% / ${(bal.ratio2*100).toFixed(0)}%`:"Configurar ingresos"}</small></button>
+      <button class="toggle-btn" id="split-p1" onclick="selectSplit('p1')">👤 100% ${n1}<small>0% ${n2}</small></button>
+      <button class="toggle-btn" id="split-p2" onclick="selectSplit('p2')">👤 100% ${n2}<small>0% ${n1}</small></button>
     </div>
     <div id="preview-box" style="display:none" class="preview-box">
       <div style="color:var(--muted);margin-bottom:6px;font-size:12px">Vista previa:</div>
@@ -726,8 +730,7 @@ window.selectPaid=function(p){
 };
 window.selectSplit=function(s){
   window._formState.splitType=s;
-  document.getElementById("split-equal").className="toggle-btn"+(s==="equal"?" active":"");
-  document.getElementById("split-prop").className="toggle-btn"+(s==="proportional"?" active":"");
+  ["equal","prop","p1","p2"].forEach(k=>{const el=document.getElementById("split-"+k);if(el)el.className="toggle-btn"+((s===(k==="prop"?"proportional":k))?" active":"");});
   updatePreview();
 };
 window.updatePreview=function(){
@@ -737,7 +740,7 @@ window.updatePreview=function(){
   const box=document.getElementById("preview-box"); if(!box) return;
   if(!amt||amt<=0){box.style.display="none";return;}
   const s=window._formState?.splitType||"equal";
-  const sp1=s==="equal"?amt*0.5:amt*bal.ratio1, sp2=s==="equal"?amt*0.5:amt*bal.ratio2;
+  const sp1=s==="equal"?amt*0.5:s==="p1"?amt:s==="p2"?0:amt*bal.ratio1, sp2=s==="equal"?amt*0.5:s==="p2"?amt:s==="p1"?0:amt*bal.ratio2;
   box.style.display="block";
   document.getElementById("prev-p1").textContent=`${c.name1||"Yo"}: $${fmt(sp1)}`;
   document.getElementById("prev-p2").textContent=`${c.name2||"Mi amor"}: $${fmt(sp2)}`;
@@ -801,8 +804,8 @@ function renderList() {
   }
 
   sorted.forEach(exp=>{
-    const sp1=exp.splitType==="equal"?exp.amount*0.5:exp.amount*bal.ratio1;
-    const sp2=exp.splitType==="equal"?exp.amount*0.5:exp.amount*bal.ratio2;
+    const sp1=exp.splitType==="equal"?exp.amount*0.5:exp.splitType==="p1"?exp.amount:exp.splitType==="p2"?0:exp.amount*bal.ratio1;
+    const sp2=exp.splitType==="equal"?exp.amount*0.5:exp.splitType==="p2"?exp.amount:exp.splitType==="p1"?0:exp.amount*bal.ratio2;
     const pName=exp.paidBy==="p1"?n1:n2;
     const dateStr=exp.date?new Date(exp.date+"T12:00:00").toLocaleDateString("es-AR"):"";
     html+=`
@@ -881,7 +884,7 @@ window.updateEditPreview=function(){
   const box=document.getElementById("edit-preview-box"); if(!box) return;
   if(!amt||amt<=0){box.style.display="none";return;}
   const s=editFormState.splitType||"equal";
-  const sp1=s==="equal"?amt*0.5:amt*bal.ratio1, sp2=s==="equal"?amt*0.5:amt*bal.ratio2;
+  const sp1=s==="equal"?amt*0.5:s==="p1"?amt:s==="p2"?0:amt*bal.ratio1, sp2=s==="equal"?amt*0.5:s==="p2"?amt:s==="p1"?0:amt*bal.ratio2;
   box.style.display="block";
   document.getElementById("edit-prev-p1").textContent=`${c.name1||"Yo"}: $${fmt(sp1)}`;
   document.getElementById("edit-prev-p2").textContent=`${c.name2||"Mi amor"}: $${fmt(sp2)}`;
