@@ -41,7 +41,7 @@
                 ".validate": "newData.val() == 'p1' || newData.val() == 'p2'"
               },
               "splitType": {
-                ".validate": "newData.val() == 'equal' || newData.val() == 'proportional'"
+                ".validate": "newData.val() == 'equal' || newData.val() == 'proportional' || newData.val() == 'p1' || newData.val() == 'p2'"
               },
               "settled": {
                 ".validate": "newData.isBoolean()"
@@ -133,7 +133,7 @@
                 ".validate": "newData.val() == 'p1' || newData.val() == 'p2'"
               },
               "splitType": {
-                ".validate": "newData.val() == 'equal' || newData.val() == 'proportional'"
+                ".validate": "newData.val() == 'equal' || newData.val() == 'proportional' || newData.val() == 'p1' || newData.val() == 'p2'"
               },
               "settled": {
                 ".validate": "newData.isBoolean()"
@@ -216,3 +216,4 @@
     }
   }
 }
+
