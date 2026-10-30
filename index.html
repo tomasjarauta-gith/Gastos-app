@@ -357,6 +357,7 @@ let state = {
   history: {}
 };
 let currentTab = 'dashboard';
+let dashboardMonth = today().slice(0,7);
 let listFilter = 'all'; // 'all' | 'pending' | 'settled'
 let editingId = null;
 let editFormState = { paidBy: "p1", splitType: "equal" };
@@ -630,13 +631,13 @@ function renderDashboard() {
     document.getElementById('tab-dashboard').innerHTML=      '<div class="section-label">Tu espacio personal</div><div class="card card-hero"><div class="balance-label">Gastos de este mes</div><div class="balance-amount">$'+fmt(monthly.reduce((s,e)=>s+Number(e.amount),0))+'</div><div class="balance-sub">'+monthly.length+' gastos</div></div><div class="card"><div class="balance-label">Total registrado</div><div class="person-paid">$'+fmt(expenses.reduce((s,e)=>s+Number(e.amount),0))+'</div><div class="balance-sub">'+expenses.length+' gastos · Solo vos tenés acceso</div></div>';
     return;
   }
-  const month=today().slice(0,7);
+  const month=dashboardMonth;
   const bal=calcBalance(month), c=state.config;
   const n1=escapeHtml(c.name1||"Yo"), n2=escapeHtml(c.name2||"Mi amor");
   const inc1=Number(c.income1)||0, inc2=Number(c.income2)||0;
-  const now=new Date();
+  const now=new Date(month+'-01T12:00:00');
   let html=`
-    <div style="text-align:center;margin-bottom:16px;color:var(--muted);font-size:13px">${MONTHS[now.getMonth()]} ${now.getFullYear()}</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:16px;color:var(--muted);font-size:13px"><button class="icon-btn" onclick="changeDashboardMonth(-1)" aria-label="Mes anterior">‹</button><strong>${MONTHS[now.getMonth()]} ${now.getFullYear()}</strong><button class="icon-btn" onclick="changeDashboardMonth(1)" aria-label="Mes siguiente">›</button></div>
     <div class="card card-hero" style="margin-bottom:12px">
       <div class="section-label">Saldo pendiente de saldar</div>
       <div style="font-family:var(--serif);font-size:38px;margin-bottom:4px">$${fmt(bal.total)}</div>
@@ -718,6 +719,10 @@ window.toggleInstallments=function(){
   if(help) help.style.display=on?"block":"none";
   updateInstallmentAmount();
   updatePreview();
+};
+window.changeDashboardMonth=function(delta){
+  const d=new Date(dashboardMonth+'-01T12:00:00'); d.setMonth(d.getMonth()+delta);
+  dashboardMonth=d.toISOString().slice(0,7); renderDashboard();
 };
 window.updateInstallmentAmount=function(){
   const total=Number(document.getElementById("f-amount")?.value||0), count=Math.max(1,parseInt(document.getElementById("f-installment-count")?.value||"1",10));
