@@ -380,6 +380,13 @@ let pendingWrites=0, spaceTimer=null, authStarted=false;
 const DEFAULT_CONFIG={name1:'Yo',name2:'Mi amor',income1:0,income2:0};
 function emptyState(){return {config:{...DEFAULT_CONFIG},expenses:{},history:{}};}
 function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function splitMode(exp){
+  if(exp.splitType==='p1'||exp.splitType==='p2') return exp.splitType;
+  if(String(exp.name||'').includes('\u200B100P1\u200B')) return 'p1';
+  if(String(exp.name||'').includes('\u200B100P2\u200B')) return 'p2';
+  return exp.splitType;
+}
+function cleanExpenseName(name){return String(name||'').replace(/[\u200B]100P[12][\u200B]/g,'');}
 function isPersonal(){return activeSpace==='personal';}
 function rawRef(path){return window._ref(window._db,path);}
 function currentPath(){
@@ -601,9 +608,10 @@ function calcBalance(monthFilter=null) {
   active.forEach(exp=>{
     total+=exp.amount;
     if(exp.paidBy==="p1") paid1+=exp.amount; else paid2+=exp.amount;
-    if(exp.splitType==="equal"){ shouldPay1+=exp.amount*0.5; shouldPay2+=exp.amount*0.5; }
-    else if(exp.splitType==="p1") shouldPay1+=exp.amount;
-    else if(exp.splitType==="p2") shouldPay2+=exp.amount;
+    const mode=splitMode(exp);
+    if(mode==="equal"){ shouldPay1+=exp.amount*0.5; shouldPay2+=exp.amount*0.5; }
+    else if(mode==="p1") shouldPay1+=exp.amount;
+    else if(mode==="p2") shouldPay2+=exp.amount;
     else { shouldPay1+=exp.amount*ratio1; shouldPay2+=exp.amount*ratio2; }
   });
   const diff1=paid1-shouldPay1;
@@ -767,7 +775,9 @@ window.addExpense=async function(){
     const seriesId=installments?`installment-${Date.now()}-${Math.random().toString(36).slice(2,8)}`:null;
     for(let i=0;i<(installments?installmentCount:1);i++){
       const d=new Date(`${date}T12:00:00`); d.setMonth(d.getMonth()+i);
-      await dbPush("expenses",{name:installments?`${name} · Cuota ${i+1}/${installmentCount}`:name,amount:installments?installmentAmount:amount,date:d.toISOString().slice(0,10),paidBy,splitType,settled:false,ts:Date.now()+i});
+      const storedMode=(splitType==='p1'||splitType==='p2')?'equal':splitType;
+      const marker=splitType==='p1'?'\u200B100P1\u200B':splitType==='p2'?'\u200B100P2\u200B':'';
+      await dbPush("expenses",{name:`${marker}${installments?`${name} · Cuota ${i+1}/${installmentCount}`:name}`,amount:installments?installmentAmount:amount,date:d.toISOString().slice(0,10),paidBy,splitType:storedMode,settled:false,ts:Date.now()+i});
     }
     showToast(installments?`${installmentCount} cuotas agregadas ✓`:"Gasto agregado ✓");
     renderAdd();
@@ -809,14 +819,14 @@ function renderList() {
   }
 
   sorted.forEach(exp=>{
-    const sp1=exp.splitType==="equal"?exp.amount*0.5:exp.splitType==="p1"?exp.amount:exp.splitType==="p2"?0:exp.amount*bal.ratio1;
-    const sp2=exp.splitType==="equal"?exp.amount*0.5:exp.splitType==="p2"?exp.amount:exp.splitType==="p1"?0:exp.amount*bal.ratio2;
+    const mode=splitMode(exp), sp1=mode==="equal"?exp.amount*0.5:mode==="p1"?exp.amount:mode==="p2"?0:exp.amount*bal.ratio1;
+    const sp2=mode==="equal"?exp.amount*0.5:mode==="p2"?exp.amount:mode==="p1"?0:exp.amount*bal.ratio2;
     const pName=exp.paidBy==="p1"?n1:n2;
     const dateStr=exp.date?new Date(exp.date+"T12:00:00").toLocaleDateString("es-AR"):"";
     html+=`
       <div class="expense-item ${exp.settled?"settled":""}">
         <div style="flex:1">
-          <div class="expense-name">${escapeHtml(exp.name)}${exp.settled?`<span class="settled-badge">✓ saldado</span>`:""}</div>
+          <div class="expense-name">${escapeHtml(cleanExpenseName(exp.name))}${exp.settled?`<span class="settled-badge">✓ saldado</span>`:""}</div>
           <div class="expense-meta">${dateStr}${isPersonal()?"":" · Pagó "+pName}</div>
           <div class="expense-split" style="display:${isPersonal()?'none':'block'}">${exp.splitType==="equal"?"⚖ Iguales":"📊 Proporcional"} · ${n1}: $${fmt(sp1)} / ${n2}: $${fmt(sp2)}</div>
         </div>
